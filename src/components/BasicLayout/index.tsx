@@ -73,7 +73,7 @@ export default function BasicLayout({
         <Shell.Branding>
           <Logo
             image="https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png"
-            text="Logo"
+            text="企业综合管理预订服务"
           />
         </Shell.Branding>
         <Shell.Navigation

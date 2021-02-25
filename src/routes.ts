@@ -1,5 +1,6 @@
-import BasicLayout from '@/layouts/BasicLayout';
+import BasicLayout from '@/components/BasicLayout';
 import Dashboard from '@/pages/Dashboard';
+import MeetingRoom from '@/pages/MeetingRoom'
 
 const routerConfig = [
   {
@@ -11,6 +12,7 @@ const routerConfig = [
         exact: true,
         component: Dashboard,
       },
+      {path: '/meeting', exact: true, component: MeetingRoom}
     ],
   },
 ];
