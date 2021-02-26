@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog } from '@alifd/next';
+import RoomUnitCard from '../../components/RoomUnitCard'
 import RoomInfoCard from '../../components/RoomInfoCard'
 
 const list = [{
@@ -50,6 +51,13 @@ const tableColumn = [{
     dataIndex: 'usedTime'
 }]
 
+const roomInfoCardData = {
+    name: '5号楼 5-242',
+    desc: '位于5号楼，会议室设备齐全,位于5号楼，会议室设备齐全,位于5号楼，会议室设备齐全,位于5号楼，会议室设备齐全,位于5号楼，会议室设备齐全',
+    image: 'xxxx',
+    usedTime: 'xxxx'
+}
+
 
 const MeetingRoom = () => {
     const [visible, setVisible] = useState<boolean>(false);
@@ -84,7 +92,7 @@ const MeetingRoom = () => {
                     onOk={() => setVisible(false)}
                     onCancel={() => setVisible(false)}
                     onClose={() => setVisible(false)}>
-                    详情
+                    <RoomInfoCard {...roomInfoCardData}></RoomInfoCard>
                 </Dialog>
             </div>
 
