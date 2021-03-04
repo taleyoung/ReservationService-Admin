@@ -1,54 +1,53 @@
-import React, { useState } from 'react';
-import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog } from '@alifd/next';
-import RoomUnitCard from '../../components/RoomUnitCard'
+import React, { useState, useEffect } from 'react';
+import { useRequest } from 'ice'
+import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag } from '@alifd/next';
 import RoomInfoCard from '../../components/RoomInfoCard'
-
-const list = [{
-    name: '2号楼',
-    description: '5-424'
-}, {
-    name: '2号楼',
-    description: '5-424'
-}, {
-    name: '2号楼',
-    description: '5-424'
-}, {
-    name: '2号楼',
-    description: '5-424'
-}, {
-    name: '2号楼',
-    description: '5-424'
-}]
-
+import RoomRsvForm from '../../components/RoomRsvForm'
+const { Group: TagGroup } = Tag;
 const roomData = [{
-    id: 1,
-    unitName: '2号楼',
-    roomName: '2-545'
+    "id": 1,
+    "name": "海棠10号楼423",
+    "device": "白板 屏幕 远程加入",
+    "capacity": 10,
+    "location": "10号楼423",
+    "description": "网络良好",
+    "adminId": 1,
+    "status": 1,
+    "areaName": "海棠区",
+    "areaId": 1,
+    reservedTime: [{
+        date: "2021-03-02",
+        start: '12:00',
+        end: '14:00'
+    }, {
+        date: "2021-03-02",
+        start: '15:00',
+        end: '19:00'
+    }]
 }, {
     id: 2,
-    unitName: '2号楼',
-    roomName: '2-545'
+    name: '海棠会议室2-425',
+    reservedTime: [{
+        date: "2021-03-02",
+        start: '10:00',
+        end: '12:00'
+    }, {
+        date: "2021-03-02",
+        start: '12:00',
+        end: '14:00'
+    }]
 }, {
     id: 3,
-    unitName: '2号楼',
-    roomName: '2-545'
-}]
-
-const tableColumn = [{
-    title: 'id',
-    dataIndex: 'id'
-}, {
-    title: '房间单元',
-    dataIndex: 'unitName'
-}, {
-    title: '房间号',
-    dataIndex: 'roomName'
-}, {
-    title: '房间描述',
-    dataIndex: 'description'
-}, {
-    title: '已预订时间',
-    dataIndex: 'usedTime'
+    name: '海棠会议室2-545',
+    reservedTime: [{
+        date: "2021-03-02",
+        start: '06:00',
+        end: '14:00'
+    }, {
+        date: "2021-03-02",
+        start: '15:00',
+        end: '17:00'
+    }]
 }]
 
 const roomInfoCardData = {
@@ -61,6 +60,25 @@ const roomInfoCardData = {
 
 const MeetingRoom = () => {
     const [visible, setVisible] = useState<boolean>(false);
+    const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+
+    const { data, error, loading, request } = useRequest({
+        url: '/room/info',
+        method: 'get',
+    });
+
+    useEffect(() => {
+        request().then(v => {
+            console.log('v', v)
+        })
+    }, [])
+    console.log('data', data)
+
+    const renderReservedTime = (value) => {
+        return <TagGroup>
+            {value.map(v => <Tag type="normal" color='orange'><a>{`${v.start} - ${v.end}`}</a></Tag>)}
+        </TagGroup>
+    }
     return (
         <div>
             <div>
@@ -80,10 +98,10 @@ const MeetingRoom = () => {
                 </Box> */}
                 <Box>
                     <Table dataSource={roomData}>
-                        {tableColumn.map(item => (
-                            <Table.Column key={item.title} title={item.title} dataIndex={item.dataIndex} />
-                        ))}
-                        <Table.Column cell={<a href="javascript:;" onClick={() => setVisible(true)}> 预订信息</a>} />
+                        <Table.Column key='name' title='会议室' dataIndex='name' cell={(v) => <a href="javascript:;" onClick={() => setVisible(true)}>{v}</a>} />
+                        <Table.Column key='desc' title='描述' dataIndex='desc' />
+                        <Table.Column key='reservedTime' title='预订时间' dataIndex='reservedTime' cell={(v) => renderReservedTime(v)} />
+                        <Table.Column cell={<a href="javascript:;" onClick={() => setDrawerVisible(true)}>立即预订</a>} />
                     </Table>
                 </Box>
                 <Dialog
@@ -94,6 +112,13 @@ const MeetingRoom = () => {
                     onClose={() => setVisible(false)}>
                     <RoomInfoCard {...roomInfoCardData}></RoomInfoCard>
                 </Dialog>
+                <Drawer title="标题"
+                    placement="right"
+                    width='600px'
+                    visible={drawerVisible}
+                    onClose={() => setDrawerVisible(false)}>
+                    <RoomRsvForm></RoomRsvForm>
+                </Drawer>
             </div>
 
         </div>
