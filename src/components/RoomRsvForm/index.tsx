@@ -16,11 +16,16 @@ const radioList = [
     }
 ];
 
-const RoomRsvForm = () => {
+interface IProps {
+    roomName: string
+}
+
+const RoomRsvForm = (props: IProps) => {
+    const { roomName } = props;
     return <div>
         <Form {...formItemLayout} size='medium' style={{ maxWidth: '500px' }}>
             <FormItem label="会议室:">
-                <Input disabled={true} value='海棠会议室5-243' />
+                <Input disabled={true} value={roomName} />
             </FormItem>
             <FormItem required label="会议主题:">
                 <Input placeholder="请输入会议主题" id="meetName" name="meetingName" />

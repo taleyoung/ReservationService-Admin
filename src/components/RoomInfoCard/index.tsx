@@ -2,16 +2,35 @@ import React from 'react';
 import { Divider, Calendar, Grid } from '@alifd/next';
 import styles from './index.module.scss'
 import meetingRoomImg from '../../assets/images/meetingRoom-01.jpg'
+import { RoomInfo } from '../../interface/room'
 import moment from 'moment';
 moment.locale('zh-cn');
 
 const { Row, Col } = Grid;
-interface IProps {
-    name: string,
-    desc: string,
-    image: string,
-    usedTime: string
+
+interface IProp {
+    roomInfo: RoomInfo
 }
+
+const roomInfoMap = [
+    {
+        name: '设备',
+        key: 'device'
+    }, {
+        name: "描述",
+        key: 'description'
+    }, {
+        name: "位置",
+        key: "location"
+    }, {
+        name: "可容纳人数",
+        key: "capacity"
+    }, {
+        name: "所在区域",
+        key: "areaName"
+    }
+]
+
 const dateCellRender = (date) => {
     const currentDate = moment();
     const dateNum = date.date();
@@ -53,15 +72,15 @@ const dateCellRender = (date) => {
         </div>
     </div>);
 }
-const RoomDialog = (props: IProps) => {
-    const { name, desc, image, usedTime } = props;
+const RoomDialog = (props: IProp) => {
+    const { roomInfo } = props;
     return (
         <div>
             <Row justify="center" align='center' style={{ width: '1000px' }}>
                 <Col span='10'><img className={styles.img} src={meetingRoomImg} alt="" /></Col>
                 <Col span='8'>
-                    <div className={styles.name}>{name}</div>
-                    <div className={styles.desc}>{desc}</div>
+                    <div className={styles.name}>{roomInfo.name}</div>
+                    {roomInfoMap.map(item => (<div key={item.key} className={styles.desc}>{item.name} : {roomInfo[item.key]}</div>))}
                 </Col>
             </Row>
             <div className={styles.calendar}>
