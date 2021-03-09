@@ -12,15 +12,14 @@ const asideMenuConfig = [
     icon: 'calendar',
   },
   {
-    name: '工作餐',
-    path: '/meeting',
-    icon: 'atm',
-  },
-  {
-    name: '酒店预订',
-    path: '/meeting',
-    icon: 'exit',
-  },
+    name: '后台管理',
+    icon: 'calendar',
+    children: [{
+      name: '会议室管理',
+      path: '/admin/room',
+
+    }]
+  }
 ];
 
 export {headerMenuConfig, asideMenuConfig};

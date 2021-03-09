@@ -1,4 +1,5 @@
 import { runApp, IAppConfig } from 'ice';
+import { Message } from '@alifd/next'
 
 const appConfig: IAppConfig = {
   app: {
@@ -30,7 +31,22 @@ const appConfig: IAppConfig = {
         onConfig: (response) => {
           // 请求成功：可以做全局的 toast 展示，或者对 response 做一些格式化
           if (response.data.code !== 0) {
-            alert('请求失败');
+            Message.error('操作失败');
+            return response.data;
+          }
+          const method = response.config.method;
+          switch (method) {
+            case 'put':
+              Message.success('修改成功');
+              break;
+            case 'delete':
+              Message.success('删除成功');
+              break;
+            case 'post':
+              Message.success('添加成功');
+              break;
+            default:
+              break;
           }
           return response.data;
         },
@@ -39,6 +55,7 @@ const appConfig: IAppConfig = {
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
+          Message.error('操作失败');
           return Promise.reject(error);
         }
       },

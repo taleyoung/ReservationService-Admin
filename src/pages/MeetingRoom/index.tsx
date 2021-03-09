@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ice'
 import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag } from '@alifd/next';
-import RoomInfoCard from '../../components/RoomInfoCard'
-import RoomRsvForm from '../../components/RoomRsvForm'
-import { RoomInfo } from '../../interface/room'
+import RoomInfoCard from '@/components/RoomInfoCard'
+import RoomRsvForm from '@/components/RoomRsvForm'
+import { RoomMeeting } from '@/interface/room'
 const { Group: TagGroup } = Tag;
 
-const defaultRoomInfo: RoomInfo = {
+const defaultRoomMeeting: RoomMeeting = {
     id: 0,
     name: '',
     device: '',
@@ -24,10 +24,10 @@ const defaultRoomInfo: RoomInfo = {
 const MeetingRoom = () => {
     const [descVisible, setDescVisible] = useState<boolean>(false);
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
-    const [roomInfo, setRoomInfo] = useState<RoomInfo>(defaultRoomInfo);
+    const [roomInfo, setRoomInfo] = useState<RoomMeeting>(defaultRoomMeeting);
 
-    const { data: roomInfoList = [], error, loading, request } = useRequest({
-        url: '/room/info',
+    const { data: roomMeetingList = [], error, loading, request } = useRequest({
+        url: '/room/meeting',
         method: 'get',
     });
 
@@ -38,18 +38,18 @@ const MeetingRoom = () => {
     }, [])
 
     const handleDialog = (index) => {
-        setRoomInfo(roomInfoList[index]);
+        setRoomInfo(roomMeetingList[index]);
         setDescVisible(true)
     }
 
     const handleDrawer = index => {
-        setRoomInfo(roomInfoList[index]);
+        setRoomInfo(roomMeetingList[index]);
         setDrawerVisible(true)
     }
 
     const renderReservedTime = (value) => {
         return <TagGroup>
-            {value.map(v => <Tag key={v.start} type="normal" color='orange'><a>{`${v.start} - ${v.end}`}</a></Tag>)}
+            {value && value.map(v => <Tag key={v.start} type="normal" color='orange'><a>{`${v.start} - ${v.end}`}</a></Tag>)}
         </TagGroup>
     }
     return (
@@ -65,7 +65,7 @@ const MeetingRoom = () => {
             </div>
             <div>
                 <Box>
-                    <Table dataSource={roomInfoList} loading={loading}>
+                    <Table dataSource={roomMeetingList} loading={loading}>
                         <Table.Column key='name' title='会议室' dataIndex='name' cell={(v, index) => <a href="javascript:;" onClick={() => handleDialog(index)}>{v}</a>} />
                         <Table.Column key='device' title='设备' dataIndex='device' />
                         <Table.Column key='reservedTimeList' title='预订时间' dataIndex='reservedTimeList' cell={(v) => renderReservedTime(v)} />

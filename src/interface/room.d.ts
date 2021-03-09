@@ -9,6 +9,9 @@ export interface RoomInfo {
   areaId: number;
   areaName: string;
   adminId: number;
-  reservedTimeList: any;
   status: number;
+}
+
+export interface RoomMeeting extends RoomInfo {
+  reservedTimeList: any;
 }
