@@ -1,4 +1,4 @@
-export interface RoomInfo {
+export interface MeetingRoom {
   id: number;
   name: string;
   device: string;
@@ -12,6 +12,6 @@ export interface RoomInfo {
   status: number;
 }
 
-export interface RoomMeeting extends RoomInfo {
+export interface RoomMeeting extends MeetingRoom {
   reservedTimeList: any;
 }

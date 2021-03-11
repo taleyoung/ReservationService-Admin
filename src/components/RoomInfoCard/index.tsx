@@ -2,14 +2,14 @@ import React from 'react';
 import { Divider, Calendar, Grid } from '@alifd/next';
 import styles from './index.module.scss'
 import meetingRoomImg from '../../assets/images/meetingRoom-01.jpg'
-import { RoomInfo } from '../../interface/room'
+import { MeetingRoom } from '../../interface/room/meetingRoom'
 import moment from 'moment';
 moment.locale('zh-cn');
 
 const { Row, Col } = Grid;
 
 interface IProp {
-    roomInfo: RoomInfo
+    roomInfo: MeetingRoom
 }
 
 const roomInfoMap = [

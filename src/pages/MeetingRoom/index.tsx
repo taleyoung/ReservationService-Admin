@@ -3,7 +3,7 @@ import { useRequest } from 'ice'
 import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag } from '@alifd/next';
 import RoomInfoCard from '@/components/RoomInfoCard'
 import RoomRsvForm from '@/components/RoomRsvForm'
-import { RoomMeeting } from '@/interface/room'
+import { RoomMeeting } from '@/interface/room/meetingRoom'
 const { Group: TagGroup } = Tag;
 
 const defaultRoomMeeting: RoomMeeting = {

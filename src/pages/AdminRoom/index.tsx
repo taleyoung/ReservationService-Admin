@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRequest } from 'ice'
-import { Divider, Table, Button, Drawer } from '@alifd/next'
-import roomInfoService from '@/service/room'
+import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
+import roomInfoService from '@/service/room/meetingRoom'
 import { RoomInfo } from '@/interface/room'
 import RoomInfoForm from '@/components/RoomInfoForm'
 
@@ -49,21 +49,40 @@ const tableColumn = [{
 }]
 const AdminRoom = () => {
     const [roomInfo, setRoomInfo] = useState<RoomInfo>(defaultRoomInfo)
+    const [drawerType, setDrawerType] = useState<string>('edit')
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false)
-    const { data: roomInfoList = [], error, loading } = useRequest(roomInfoService.getRoomInfo, {
-        manual: false
-    });
+    const { data: roomInfoData = {}, loading, request, refresh } = useRequest(roomInfoService.getMeetingRoom);
+    const { loading: deleteLoading, request: deleteRoomReq } = useRequest(roomInfoService.deleteMeetingRoom);
 
-    const handleShowDrawer = (index: number) => {
-        setRoomInfo(roomInfoList[index])
-        setDrawerVisible(true)
+    useEffect(() => {
+        request();
+    }, [])
+
+    const addRoom = () => {
+        setDrawerType('add');
+        setDrawerVisible(true);
+    }
+
+    const updateRoom = (index: number) => {
+        setRoomInfo(roomInfoData.list[index]);
+        setDrawerVisible(true);
+    }
+
+    const handleCloseDrawer = () => {
+        setDrawerVisible(false);
+        refresh();
+    }
+
+    const deleteRoom = async (id: number) => {
+        await deleteRoomReq(id);
+        await refresh()
     }
 
     const renderHandle = (v: any, index: number) => {
         return <div>
-            <Button type='secondary' onClick={() => handleShowDrawer(index)}>修改</Button>
+            <Button type='secondary' onClick={() => updateRoom(index)}>修改</Button>
             <Divider direction='ver'></Divider>
-            <Button type='secondary' onClick={() => handleShowDrawer(index)}>删除</Button>
+            <Button warning loading={deleteLoading} onClick={() => deleteRoom(index)}>删除</Button>
         </div>
     }
 
@@ -73,19 +92,20 @@ const AdminRoom = () => {
                 <h2>会议室管理</h2>
                 <Divider></Divider>
             </div>
-            <Button type='primary'>新增会议室</Button>
+            <Button type='primary' onClick={() => addRoom()}>新增会议室</Button>
             <div>
-                <Table dataSource={roomInfoList} loading={loading}>
+                <Table dataSource={roomInfoData.list} loading={loading}>
                     {tableColumn.map(item => <Table.Column key={item.key} title={item.title} dataIndex={item.dataIndex} />)}
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
                 </Table>
+                <Pagination total={roomInfoData.totalCount} pageSize={roomInfoData.pageSize} onChange={(curPage) => request(curPage)} />
             </div>
             <Drawer title="编辑会议室"
                 placement="right"
                 width='600px'
                 visible={drawerVisible}
-                onClose={() => setDrawerVisible(false)}>
-                <RoomInfoForm roomInfo={roomInfo}></RoomInfoForm>
+                onClose={() => handleCloseDrawer()}>
+                <RoomInfoForm isUpdate={drawerType === 'edit' ? true : false} roomInfo={roomInfo}></RoomInfoForm>
             </Drawer>
         </div>
     )

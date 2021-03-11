@@ -1,8 +1,8 @@
 import React from 'react'
 import { useRequest } from 'ice'
 import { Form, Input } from '@alifd/next';
-import roomInfoService from '@/service/room'
-import { RoomInfo } from '@/interface/room';
+import roomInfoService from '@/service/room/meetingRoom'
+import { MeetingRoom } from '@/interface/room/meetingRoom';
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: { span: 6 },
@@ -10,7 +10,8 @@ const formItemLayout = {
 };
 
 interface IProps {
-    roomInfo: RoomInfo
+    roomInfo: MeetingRoom;
+    isUpdate: boolean;
 }
 const formItem = [{
     title: '会议室',
@@ -36,29 +37,34 @@ const formItem = [{
     dataIndex: 'status'
 }]
 const RoomInfoForm = (props: IProps) => {
-    const { roomInfo } = props;
-    const { data, request, loading: updateLoading } = useRequest(roomInfoService.updateRoomInfo);
-
-    const handleSubmit = async (value: RoomInfo) => {
-        console.log('value, e', value)
+    const { roomInfo, isUpdate } = props;
+    const { request: updateRoom, loading: updateLoading } = useRequest(roomInfoService.updateMeetingRoom);
+    const { request: addRoom, loading: addLoading } = useRequest(roomInfoService.addMeetingRoom);
+    const handleSubmit = async (value: MeetingRoom) => {
         const data = {
             ...value,
-            id: roomInfo.id,
             adminId: 1,
             areaId: 1
         }
-        console.log('data', data)
-        await request(roomInfo.id, data);
+        if (isUpdate) {
+            await updateRoom(roomInfo.id, {
+                ...data,
+                id: roomInfo.id,
+            });
+            return;
+        }
+        addRoom(data);
+        return;
     }
     return <div>
         <Form {...formItemLayout} size='medium' style={{ maxWidth: '500px' }}>
             {formItem.map(item => (
                 <FormItem label={item.title} key={item.dataIndex}>
-                    <Input defaultValue={roomInfo[item.dataIndex]} id={item.dataIndex} name={item.dataIndex} />
+                    <Input defaultValue={isUpdate ? roomInfo[item.dataIndex] : ''} id={item.dataIndex} name={item.dataIndex} />
                 </FormItem>
             ))}
             <FormItem wrapperCol={{ offset: 6 }} >
-                <Form.Submit loading={updateLoading} validate type="primary" onClick={(v) => handleSubmit(v)} style={{ marginRight: 10 }}>保存</Form.Submit>
+                <Form.Submit loading={isUpdate ? updateLoading : addLoading} validate type="primary" onClick={(v) => handleSubmit(v)} style={{ marginRight: 10 }}>保存</Form.Submit>
             </FormItem>
         </Form>
 
