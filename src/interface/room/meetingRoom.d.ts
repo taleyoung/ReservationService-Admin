@@ -12,6 +12,6 @@ export interface MeetingRoom {
   status: number;
 }
 
-export interface RoomMeeting extends MeetingRoom {
-  reservedTimeList: any;
+export interface MeetingRoomRsv extends MeetingRoom {
+  rsvTimeList: any;
 }

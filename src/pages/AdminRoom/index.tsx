@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useRequest } from 'ice'
 import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
 import roomInfoService from '@/service/room/meetingRoom'
-import { RoomInfo } from '@/interface/room'
+import { MeetingRoom } from '@/interface/room/meetingRoom'
 import RoomInfoForm from '@/components/RoomInfoForm'
 
-const defaultRoomInfo: RoomInfo = {
+const defaultRoomInfo: MeetingRoom = {
     id: 0,
     name: '',
     device: '',
@@ -48,14 +48,14 @@ const tableColumn = [{
     dataIndex: 'status'
 }]
 const AdminRoom = () => {
-    const [roomInfo, setRoomInfo] = useState<RoomInfo>(defaultRoomInfo)
+    const [roomInfo, setRoomInfo] = useState<MeetingRoom>(defaultRoomInfo)
     const [drawerType, setDrawerType] = useState<string>('edit')
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false)
     const { data: roomInfoData = {}, loading, request, refresh } = useRequest(roomInfoService.getMeetingRoom);
     const { loading: deleteLoading, request: deleteRoomReq } = useRequest(roomInfoService.deleteMeetingRoom);
 
     useEffect(() => {
-        request();
+        request({});
     }, [])
 
     const addRoom = () => {
@@ -98,7 +98,7 @@ const AdminRoom = () => {
                     {tableColumn.map(item => <Table.Column key={item.key} title={item.title} dataIndex={item.dataIndex} />)}
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
                 </Table>
-                <Pagination total={roomInfoData.totalCount} pageSize={roomInfoData.pageSize} onChange={(curPage) => request(curPage)} />
+                <Pagination total={roomInfoData.totalCount} pageSize={roomInfoData.pageSize} onChange={(curPage) => request({ curPage })} />
             </div>
             <Drawer title="编辑会议室"
                 placement="right"

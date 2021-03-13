@@ -3,10 +3,12 @@ import { useRequest } from 'ice'
 import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag } from '@alifd/next';
 import RoomInfoCard from '@/components/RoomInfoCard'
 import RoomRsvForm from '@/components/RoomRsvForm'
-import { RoomMeeting } from '@/interface/room/meetingRoom'
+import { MeetingRoomRsv } from '@/interface/room/meetingRoom'
+import meetRoomService from '@/service/room/meetingRoom';
+import meetingService from '@/service/room/meeting'
 const { Group: TagGroup } = Tag;
 
-const defaultRoomMeeting: RoomMeeting = {
+const defaultRoomMeeting: MeetingRoomRsv = {
     id: 0,
     name: '',
     device: '',
@@ -17,39 +19,45 @@ const defaultRoomMeeting: RoomMeeting = {
     areaId: 0,
     areaName: '',
     adminId: 1,
-    reservedTimeList: [],
+    rsvTimeList: [],
     status: 1
 }
 
 const MeetingRoom = () => {
     const [descVisible, setDescVisible] = useState<boolean>(false);
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
-    const [roomInfo, setRoomInfo] = useState<RoomMeeting>(defaultRoomMeeting);
+    const [drawerType, setDrawerType] = useState<string>('new');
+    const [curMeetingInfo, setCurMeetingInfo] = useState();
+    const [roomInfo, setRoomInfo] = useState<MeetingRoomRsv>(defaultRoomMeeting);
 
-    const { data: roomMeetingList = [], error, loading, request } = useRequest({
-        url: '/room/meeting',
-        method: 'get',
-    });
+    const { data: meetingRoomData = {}, error, loading, request } = useRequest(meetRoomService.getMeetingRoom);
+    const { data: meetingInfo = {}, request: getMeetingById } = useRequest(meetingService.getMeetingById);
 
     useEffect(() => {
-        request().then(v => {
-            console.log('v', v)
-        })
+        request({ meetingFlag: true });
     }, [])
 
     const handleDialog = (index) => {
-        setRoomInfo(roomMeetingList[index]);
+        setRoomInfo(meetingRoomData.list[index]);
         setDescVisible(true)
     }
 
-    const handleDrawer = index => {
-        setRoomInfo(roomMeetingList[index]);
+    const showMeetingInfo = async (meetingId: number) => {
+        // getMeetingById(meetingId);
+        const data = await getMeetingById(meetingId);
+        console.log('meetingInfo :>> ', meetingInfo);
+        setCurMeetingInfo(data);
+        setDrawerVisible(true)
+    }
+
+    const handleRsvDrawer = index => {
+        setRoomInfo(meetingRoomData.list[index]);
         setDrawerVisible(true)
     }
 
     const renderReservedTime = (value) => {
         return <TagGroup>
-            {value && value.map(v => <Tag key={v.start} type="normal" color='orange'><a>{`${v.start} - ${v.end}`}</a></Tag>)}
+            {value && value.map(v => <Tag key={v.start} type="normal" color='orange' onClick={() => showMeetingInfo(v.meetingId)}><a>{`${v.start} - ${v.end}`}</a></Tag>)}
         </TagGroup>
     }
     return (
@@ -65,11 +73,11 @@ const MeetingRoom = () => {
             </div>
             <div>
                 <Box>
-                    <Table dataSource={roomMeetingList} loading={loading}>
+                    <Table dataSource={meetingRoomData.list} loading={loading}>
                         <Table.Column key='name' title='会议室' dataIndex='name' cell={(v, index) => <a href="javascript:;" onClick={() => handleDialog(index)}>{v}</a>} />
                         <Table.Column key='device' title='设备' dataIndex='device' />
-                        <Table.Column key='reservedTimeList' title='预订时间' dataIndex='reservedTimeList' cell={(v) => renderReservedTime(v)} />
-                        <Table.Column cell={(v, index) => <a href="javascript:;" onClick={() => handleDrawer(index)}>立即预订</a>} />
+                        <Table.Column key='reservedTimeList' title='预订时间' dataIndex='rsvTimeList' cell={(v) => renderReservedTime(v)} />
+                        <Table.Column cell={(v, index) => <a href="javascript:;" onClick={() => handleRsvDrawer(index)}>立即预订</a>} />
                     </Table>
                 </Box>
                 <Dialog
@@ -80,12 +88,12 @@ const MeetingRoom = () => {
                     onClose={() => setDescVisible(false)}>
                     <RoomInfoCard roomInfo={roomInfo}></RoomInfoCard>
                 </Dialog>
-                <Drawer title="标题"
+                <Drawer title="会议详情"
                     placement="right"
                     width='600px'
                     visible={drawerVisible}
                     onClose={() => setDrawerVisible(false)}>
-                    <RoomRsvForm roomName={roomInfo.name}></RoomRsvForm>
+                    <RoomRsvForm roomId={roomInfo.id} roomName={roomInfo.name} meetingInfo={curMeetingInfo}></RoomRsvForm>
                 </Drawer>
             </div>
 

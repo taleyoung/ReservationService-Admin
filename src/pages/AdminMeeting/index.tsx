@@ -8,7 +8,10 @@ const tableColumn = [{
     dataIndex: 'name'
 }, {
     title: '会议日期',
-    dataIndex: 'capacity'
+    dataIndex: 'date'
+}, {
+    title: '会议室',
+    dataIndex: 'meetingRoomId'
 }, {
     title: '开始时间',
     dataIndex: 'start'
@@ -26,7 +29,7 @@ const tableColumn = [{
     dataIndex: 'createTime'
 }]
 const AdminMeeting = () => {
-    const { data: roomInfoData = {}, loading, request, refresh } = useRequest(meetingService.getMeeting, {
+    const { data: roomInfoData = {}, loading, request, refresh } = useRequest(meetingService.getMeetingList, {
         manual: false
     });
 

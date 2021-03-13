@@ -14,11 +14,16 @@ const asideMenuConfig = [
   {
     name: '后台管理',
     icon: 'calendar',
-    children: [{
-      name: '会议室管理',
-      path: '/admin/room',
-
-    }]
+    children: [
+      {
+        name: '会议室管理',
+        path: '/admin/meeting-room',
+      },
+      {
+        name: '会议查询',
+        path: '/admin/meeting',
+      }
+    ]
   }
 ];
 
