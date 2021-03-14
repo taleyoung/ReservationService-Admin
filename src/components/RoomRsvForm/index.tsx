@@ -47,11 +47,12 @@ const formItem = [{
 interface IProps {
     roomId: number;
     roomName: string;
+    date: Date;
     meetingInfo?: Meeting;
 }
 
 const RoomRsvForm = (props: IProps) => {
-    const { roomName, roomId, meetingInfo } = props;
+    const { roomName, roomId, meetingInfo, date } = props;
     const { request } = useRequest(meetingService.addMeeting);
 
     const submitMeeting = (value) => {
@@ -72,7 +73,7 @@ const RoomRsvForm = (props: IProps) => {
         return (
             <Form {...formItemLayout} size='medium' style={{ maxWidth: '500px' }}>
                 {formItem.map(item => (
-                    <FormItem label={item.title}>
+                    <FormItem label={item.title} key={item.title}>
                         <Input disabled={true} value={meetingInfo[item.dataIndex]} />
                     </FormItem>
                 ))}

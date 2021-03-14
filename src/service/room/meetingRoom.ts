@@ -5,7 +5,7 @@ const prefix = 'room';
 const roomInfoUrl = `${prefix}/meeting-room`;
 
 interface Params {
-  meetingFlag?: boolean;
+  date?: Date;
   curPage?: number;
   limit?: number
 }
@@ -15,7 +15,7 @@ export default {
     return request({
       url: roomInfoUrl,
       method: 'GET',
-      params: {page: 1, limit: 10, reserved: false, ...params}
+      params: {page: 1, limit: 10, ...params}
     })
   },
   async addMeetingRoom(data: MeetingRoom) {
