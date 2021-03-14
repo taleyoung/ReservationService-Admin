@@ -1,7 +1,9 @@
 import BasicLayout from '@/components/BasicLayout';
+import AdminHotel from '@/pages/AdminHotel'
 import AdminMeeting from '@/pages/AdminMeeting'
-import AdminRoom from '@/pages/AdminRoom';
+import AdminMeetingRoom from '@/pages/AdminMeetingRoom';
 import Dashboard from '@/pages/Dashboard';
+import HotelRoom from '@/pages/HotelRoom'
 import MeetingRoom from '@/pages/MeetingRoom'
 
 const routerConfig = [
@@ -15,8 +17,10 @@ const routerConfig = [
         component: Dashboard,
       },
       {path: '/meeting', exact: true, component: MeetingRoom},
-      {path: '/admin/meeting-room', exact: true, component: AdminRoom},
-      {path: '/admin/meeting', exact: true, component: AdminMeeting}
+      {path: '/hotel', exact: true, component: HotelRoom},
+      {path: '/admin/meeting-room', exact: true, component: AdminMeetingRoom},
+      {path: '/admin/meeting', exact: true, component: AdminMeeting},
+      {path: '/admin/hotel', exact: true, component: AdminHotel}
     ],
   },
 ];
