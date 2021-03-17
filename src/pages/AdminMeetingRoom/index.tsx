@@ -20,26 +20,38 @@ const defaultRoomInfo: MeetingRoom = {
 }
 const tableColumn = [{
     title: '会议室',
-    dataIndex: 'name'
+    dataIndex: 'name',
+    enableEdit: true
 }, {
     title: '容纳人数',
-    dataIndex: 'capacity'
+    dataIndex: 'capacity',
+    enableEdit: true
 }, {
     title: '设备',
-    dataIndex: 'device'
+    dataIndex: 'device',
+    enableEdit: true
 }, {
     title: '描述',
-    dataIndex: 'description'
+    dataIndex: 'description',
+    enableEdit: true
 }, {
     title: '位置',
-    dataIndex: 'location'
+    dataIndex: 'location',
+    enableEdit: true
 }, {
     title: '所在区域',
-    dataIndex: 'areaName'
+    dataIndex: 'areaName',
+    enableEdit: true
 }, {
     title: '状态',
-    dataIndex: 'status'
+    dataIndex: 'status',
+    enableEdit: true
 }]
+
+const addServiceExtraData = {
+    adminId: 1,
+    areaId: 1
+}
 const AdminMeetingRoom = () => {
     const [roomInfo, setRoomInfo] = useState<MeetingRoom>(defaultRoomInfo)
     const [drawerType, setDrawerType] = useState<string>('edit')
@@ -107,6 +119,7 @@ const AdminMeetingRoom = () => {
                     formItem={tableColumn}
                     updateService={updateMeetingRoomService}
                     addService={addMeetingRoomService}
+                    addServiceExtraDate={addServiceExtraData}
                 ></RoomInfoForm>
             </Drawer>
         </div>

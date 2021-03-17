@@ -1,33 +1,34 @@
 import React from 'react'
 import { Form, Input } from '@alifd/next';
-import { MeetingRoom } from '@/interface/room/meetingRoom';
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 }
 };
 interface IProps {
-    roomInfo: MeetingRoom;
+    roomInfo: any;
     isUpdate: boolean;
     formItem: Item[];
     updateService: any;
     addService: any;
+    addServiceExtraDate?: any;
 }
 interface Item {
     title: string;
     dataIndex: string;
+    enableEdit: boolean
 }
 
 const RoomInfoForm = (props: IProps) => {
-    const { roomInfo, isUpdate, formItem, updateService, addService } = props;
+    const { roomInfo, isUpdate, formItem, updateService, addService, addServiceExtraDate } = props;
     const { request: updateRoom, loading: updateLoading } = updateService;
     const { request: addRoom, loading: addLoading } = addService;
 
-    const handleSubmit = async (value: MeetingRoom) => {
+    const handleSubmit = async (value) => {
         const data = {
             ...value,
-            adminId: 1,
-            areaId: 1
+            ...addServiceExtraDate,
+
         }
         if (isUpdate) {
             await updateRoom(roomInfo.id, {
@@ -42,7 +43,7 @@ const RoomInfoForm = (props: IProps) => {
     return <div>
         <Form {...formItemLayout} size='medium' style={{ maxWidth: '500px' }}>
             {formItem.map(item => (
-                <FormItem label={item.title} key={item.dataIndex}>
+                item.enableEdit && <FormItem label={item.title} key={item.dataIndex}>
                     <Input defaultValue={isUpdate ? roomInfo[item.dataIndex] : ''} id={item.dataIndex} name={item.dataIndex} />
                 </FormItem>
             ))}

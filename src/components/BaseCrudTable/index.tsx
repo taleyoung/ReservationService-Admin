@@ -1,34 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { useRequest, Link } from 'ice'
 import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
-import { hotelService } from '@/service/room'
 import RoomInfoForm from '@/components/RoomInfoForm'
 
-const tableColumn = [{
-    title: '酒店',
-    dataIndex: 'name',
-    enableEdit: true
-}, {
-    title: '酒店评分',
-    dataIndex: 'score',
-    enableEdit: true
-}, {
-    title: '位置',
-    dataIndex: 'location',
-    enableEdit: true
-}, {
-    title: '描述',
-    dataIndex: 'description',
-    enableEdit: true
-}]
-const AdminHotel = () => {
+interface IProps {
+    tableColumn: any;
+    getListService: any;
+    deleteService: any;
+    addService: any;
+    updateService: any;
+    addServiceExtraData?: any
+}
+
+const BaseCrudTable = (props: IProps) => {
+    const { tableColumn, getListService, deleteService, addService, updateService, addServiceExtraData } = props;
+
     const [hotelInfo, setHotelInfo] = useState();
     const [drawerType, setDrawerType] = useState<string>('edit')
     const [drawerVisible, setDrawerVisible] = useState<boolean>(false)
-    const { data: hotelData = {}, loading, request, refresh } = useRequest(hotelService.getList);
-    const { loading: deleteLoading, request: deleteRoomReq } = useRequest(hotelService.delete);
-    const addService = useRequest(hotelService.add);
-    const updateService = useRequest(hotelService.update)
+    const { data: hotelData = {}, loading, request, refresh } = getListService;
+    const { loading: deleteLoading, request: deleteRoomReq } = deleteService;
+
 
     useEffect(() => {
         request();
@@ -50,31 +41,26 @@ const AdminHotel = () => {
         refresh();
     }
 
-    const deleteRoom = async (id: number) => {
-        await deleteRoomReq(id);
-        await refresh()
+    const deleteRoom = async (record: any) => {
+        await deleteRoomReq(record.id);
+        await refresh();
     }
 
-    const renderHandle = (v: any, index: number) => {
+    const renderHandle = (v: any, index: number, record: any) => {
         return <div>
             <Button type='secondary' onClick={() => update(index)}>修改</Button>
             <Divider direction='ver'></Divider>
-            <Button warning loading={deleteLoading} onClick={() => deleteRoom(index)}>删除</Button>
+            <Button warning loading={deleteLoading} onClick={() => deleteRoom(record)}>删除</Button>
         </div>
     }
 
     return (
         <div>
-            <div>
-                <h2>酒店管理</h2>
-                <Divider></Divider>
-            </div>
-            <Button type='primary' onClick={() => add()}>新增酒店</Button>
+            <Button type='primary' onClick={() => add()}>新增</Button>
             <div>
                 <Table dataSource={hotelData.list} loading={loading}>
                     {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
-                    <Table.Column key='room' title='房间管理' dataIndex='room' cell={(v: any, index: number) => <Link to='/admin/hotel/1' >查看</Link>} />
-                    <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
+                    <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number, record: any) => renderHandle(v, index, record)} />
                 </Table>
                 <Pagination total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(curPage) => request(curPage)} />
             </div>
@@ -89,10 +75,11 @@ const AdminHotel = () => {
                     formItem={tableColumn}
                     updateService={updateService}
                     addService={addService}
+                    addServiceExtraDate={addServiceExtraData}
                 ></RoomInfoForm>
             </Drawer>
         </div>
     )
 }
 
-export default AdminHotel;
+export default BaseCrudTable;

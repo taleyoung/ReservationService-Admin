@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 import { Card, Button, Dialog, Table } from '@alifd/next';
+import hotelImg from '@/assets/images/hotel.jpg'
+
 
 interface IProps {
     title: string,
@@ -40,6 +42,9 @@ const RoomUnitCard: FC<IProps> = ({ title, desc }) => {
 
     return <div>
         <Card free style={{ width: 300, margin: 20 }}>
+            <Card.Media>
+                <img src={hotelImg} style={{ borderRadius: '10px' }} />
+            </Card.Media>
             <Card.Header title={title} style={{ width: 300 }} />
             <Card.Content>
                 {desc}

@@ -2,8 +2,9 @@ import {request} from 'ice'
 
 const prefix = 'room';
 const hotelUrl = `${prefix}/hotel`;
+const hotelRoomUrl = `${prefix}/hotel-room`
 
-const defaultService =
+const baseService =
     (url: string) => {
       return {
         async getList(curPage?: number, limit?: number) {
@@ -31,7 +32,11 @@ const defaultService =
       }
     }
 
-const hotelService = defaultService(hotelUrl);
 
+const hotelService = baseService(hotelUrl);
 
-export {hotelService}
+const hotelRoomService = baseService(hotelRoomUrl)
+
+export {
+  hotelService, hotelRoomService
+}

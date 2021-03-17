@@ -1,28 +1,87 @@
-import React, { useState } from 'react'
-import { useRequest } from 'ice'
+import React, { useEffect } from 'react'
+import { useParams, useRequest } from 'ice'
+import { Divider, Slider, ResponsiveGrid, Tab, List, Box, Grid, Avatar, Button } from '@alifd/next';
 import { hotelService } from '@/service/room'
-import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag, Search } from '@alifd/next';
+import hotelDeafultImg from '@/assets/images/hotel.jpg'
 
-import moment from 'moment'
-const nowDate = moment().format("YYYY-MM-DD")
+import HotelInfo from './HotelInfo'
+import styles from './index.module.scss'
+
+const { Cell } = ResponsiveGrid;
+const { Row, Col } = Grid;
+const { Item: ListItem } = List;
+const { Item: TabItem } = Tab;
+
+const slides = [
+    { url: 'https://img.alicdn.com/tps/TB1bewbNVXXXXc5XXXXXXXXXXXX-1000-300.png', text: 'Tape Player Skin Design Competition' },
+    { url: 'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg', text: 'Mobile Phone Taobao Skin Call' },
+    { url: 'https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg', text: 'Design Enabling Public Welfare' },
+    { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' }
+];
+
+const sliderNodes = slides.map((item, index) => <div key={index} className="slider-img-wrapper"><img draggable={false} src={item.url} alt={item.text} /></div>);
 
 const HotelRoom = () => {
-    const [date, setDate] = useState<string>(nowDate);
-    const { request } = useRequest(hotelService.getList);
+    const params = useParams();
+    console.log('params', params);
+    const { data: hotelData, request } = useRequest(hotelService.getById);
+    useEffect(() => {
+        request(params.id)
+    }, [])
+    console.log('data', hotelData)
 
-    const searchRoom = (v: string) => {
-        console.log('v :>> ', v, new Date(v));
-        setDate(v);
+    const renderExtra = () => {
+        return <div>
+            <div className={styles.price}><span style={{ fontSize: '18px' }}>￥</span>215</div>
+            <Button type='secondary'>立即预订</Button>
+        </div>
     }
-
+    if (!hotelData) {
+        return null;
+    }
     return <div>
         <div>
-            <h2>会议室预订</h2>
+            <h2>酒店详情</h2>
             <Divider></Divider>
         </div>
-        <div>
-            <DatePicker value={date} onChange={(v) => searchRoom(v as string)}></DatePicker>
-        </div>
-    </div>
+        <ResponsiveGrid gap={20}>
+            <Cell colSpan={8}>
+                <Slider>{sliderNodes}</Slider>
+            </Cell >
+            <Cell colSpan={4}>
+                <HotelInfo
+                    title={hotelData.name}
+                    score={hotelData.score}
+                    description={hotelData.description}
+                    location={hotelData.location}
+                    phoneNumber={hotelData.phoneNumber}
+                ></HotelInfo>
+            </Cell>
+        </ResponsiveGrid>
+        <Row justify='center' >
+            <Col span='16'>
+                <Tab className={styles.tab}>
+                    <TabItem title="房间预订" key="1">
+                        <List size='medium' className={styles.list}>
+                            {hotelData.rooms.map(item => (
+                                <ListItem
+                                    key={item.id}
+                                    extra={renderExtra()}
+                                    title={<h2>{item.name}</h2>}
+                                    // <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>大</Avatar>
+                                    media={<img className={styles.img} src={hotelDeafultImg}></img>}
+                                >
+                                    <div>14㎡ 大床 有窗</div>
+                                    <div>仅剩2间</div>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </TabItem>
+                    <TabItem title="评价" key="2">暂无</TabItem>
+                </Tab>
+            </Col>
+        </Row>
+    </div >
 }
+
 export default HotelRoom;
