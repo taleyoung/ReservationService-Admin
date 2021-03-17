@@ -2,7 +2,7 @@ import React from 'react'
 import { useRequest } from 'ice'
 import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
 
-import { hotelRoomService } from '@/service/room'
+import { hotelRoomTypeService } from '@/service/room'
 import BaseCrudTable from '@/components/BaseCrudTable'
 
 const tableColumn = [{
@@ -37,12 +37,12 @@ const addServiceExtraData = {
 }
 
 const AdminHotelRoom = () => {
-    const getListService = useRequest(hotelRoomService.getList, {
+    const getListService = useRequest(hotelRoomTypeService.getList, {
         manual: false
     });
-    const deleteService = useRequest(hotelRoomService.delete);
-    const addService = useRequest(hotelRoomService.add);
-    const updateService = useRequest(hotelRoomService.update)
+    const deleteService = useRequest(hotelRoomTypeService.delete);
+    const addService = useRequest(hotelRoomTypeService.add);
+    const updateService = useRequest(hotelRoomTypeService.update)
 
     // const renderHandle = (v: any, index: number) => {
     //     return <div>

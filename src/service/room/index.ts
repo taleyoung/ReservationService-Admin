@@ -2,7 +2,7 @@ import {request} from 'ice'
 
 const prefix = 'room';
 const hotelUrl = `${prefix}/hotel`;
-const hotelRoomUrl = `${prefix}/hotel-room`
+const hotelRoomTypeUrl = `${prefix}/hotel-room-type`
 
 const baseService =
     (url: string) => {
@@ -35,8 +35,8 @@ const baseService =
 
 const hotelService = baseService(hotelUrl);
 
-const hotelRoomService = baseService(hotelRoomUrl)
+const hotelRoomTypeService = baseService(hotelRoomTypeUrl)
 
 export {
-  hotelService, hotelRoomService
+  hotelService, hotelRoomTypeService
 }
