@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useRequest } from 'ice'
-import { Divider, Slider, ResponsiveGrid, Tab, List, Box, Grid, Avatar, Button } from '@alifd/next';
+import { Divider, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Avatar, Button } from '@alifd/next';
 import { hotelService } from '@/service/room'
 import hotelDeafultImg from '@/assets/images/hotel.jpg'
 
 import HotelInfo from './HotelInfo'
+import HotelRsvForm from './HotelRsvForm'
 import styles from './index.module.scss'
 
 const { Cell } = ResponsiveGrid;
@@ -23,17 +24,24 @@ const sliderNodes = slides.map((item, index) => <div key={index} className="slid
 
 const HotelRoom = () => {
     const params = useParams();
-    console.log('params', params);
     const { data: hotelData, request } = useRequest(hotelService.getById);
+    const [rsvDrawerVisible, setRsvDrawerVisible] = useState(false)
+    const [hotelRoomInfo, setHotelRoomInfo] = useState();
+
     useEffect(() => {
         request(params.id)
     }, [])
     console.log('data', hotelData)
 
-    const renderExtra = () => {
+    const showRsvHotel = (roomInfo) => {
+        setRsvDrawerVisible(true);
+        setHotelRoomInfo(roomInfo);
+    }
+
+    const renderExtra = (roomInfo) => {
         return <div>
             <div className={styles.price}><span style={{ fontSize: '18px' }}>￥</span>215</div>
-            <Button type='secondary'>立即预订</Button>
+            <Button type='secondary' onClick={() => showRsvHotel(roomInfo)}>立即预订</Button>
         </div>
     }
     if (!hotelData) {
@@ -66,7 +74,7 @@ const HotelRoom = () => {
                             {hotelData.rooms.map(item => (
                                 <ListItem
                                     key={item.id}
-                                    extra={renderExtra()}
+                                    extra={renderExtra(item)}
                                     title={<h2>{item.name}</h2>}
                                     // <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>大</Avatar>
                                     media={<img className={styles.img} src={hotelDeafultImg}></img>}
@@ -81,6 +89,14 @@ const HotelRoom = () => {
                 </Tab>
             </Col>
         </Row>
+        <Drawer
+            title="酒店预订"
+            placement="right"
+            width='600px'
+            visible={rsvDrawerVisible}
+            onClose={() => setRsvDrawerVisible(false)}>
+            <HotelRsvForm hotelRoomInfo={hotelRoomInfo}></HotelRsvForm>
+        </Drawer>
     </div >
 }
 
