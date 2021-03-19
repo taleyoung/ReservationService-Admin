@@ -7,6 +7,7 @@ import hotelDeafultImg from '@/assets/images/hotel.jpg'
 import HotelInfo from './HotelInfo'
 import HotelRsvForm from './HotelRsvForm'
 import styles from './index.module.scss'
+import { Item } from '@alifd/next/types/step';
 
 const { Cell } = ResponsiveGrid;
 const { Row, Col } = Grid;
@@ -31,7 +32,6 @@ const HotelRoom = () => {
     useEffect(() => {
         request(params.id)
     }, [])
-    console.log('data', hotelData)
 
     const showRsvHotel = (roomInfo) => {
         setRsvDrawerVisible(true);
@@ -40,7 +40,7 @@ const HotelRoom = () => {
 
     const renderExtra = (roomInfo) => {
         return <div>
-            <div className={styles.price}><span style={{ fontSize: '18px' }}>￥</span>215</div>
+            <div className={styles.price}><span style={{ fontSize: '18px' }}>￥</span>{roomInfo.originalPrice}</div>
             <Button type='secondary' onClick={() => showRsvHotel(roomInfo)}>立即预订</Button>
         </div>
     }

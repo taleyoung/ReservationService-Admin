@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRequest } from 'ice'
 import { Form, Input, DatePicker, TimePicker, Radio } from '@alifd/next';
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import { hotelOrderService } from '@/service/order/index'
 
 import styles from './index.module.scss'
@@ -25,17 +25,27 @@ interface IProps {
 
 const HotelRsvForm = (props: IProps) => {
     const { hotelRoomInfo } = props;
-    const { hotelName, name: hotelRoomTypeName } = hotelRoomInfo;
-    const { request } = useRequest(hotelOrderService.add);
+    const { hotelName, name: hotelRoomTypeName, id: hotelRoomTypeId, originalPrice } = hotelRoomInfo;
+    const [startDate, setStartDate] = useState(moment());
+    const [endDate, setEndDate] = useState(moment());
+    const { request, loading } = useRequest(hotelOrderService.add);
+    // const { request: payOrder } = useRequest(hotelOrderService.payOrder)
 
-    const submitMeeting = (value) => {
-        console.log('value', value);
+    const submitMeeting = async (value) => {
+        const days = endDate.diff(startDate, 'day') + 1
+
         const data = {
             ...value,
+            totalPrice: days * originalPrice,
             userId: 1,
             userName: "滕野",
+            hotelRoomTypeId
         }
-        request(data);
+        const res = await request(data);
+        console.log('res', res)
+        // if (res.code === 0) {
+        //     console.log('success')
+        // }
 
     }
     return <div>
@@ -50,13 +60,13 @@ const HotelRsvForm = (props: IProps) => {
                 <Input placeholder="请输入姓名" id="personName" name="personName" />
             </FormItem>
             <FormItem label="身份证号:">
-                <Input placeholder="请输入身份证号" id="personIdNum" name="personIdNum" />
+                <Input placeholder="请输入身份证号" id="personIdNumber" name="personIdNumber" />
             </FormItem>
             <FormItem label="入职日期:">
-                <DatePicker defaultValue={moment()} format="YYYY-M-D" id='startDate' name="startDate" />
+                <DatePicker onChange={(v) => setStartDate(v as Moment)} defaultValue={moment()} format="YYYY-M-D" id='startDate' name="startDate" />
             </FormItem>
             <FormItem label="离开日期:">
-                <DatePicker defaultValue={moment()} format="YYYY-M-D" id='endDate' name="endDate" />
+                <DatePicker onChange={(v) => setEndDate(v as Moment)} defaultValue={moment()} format="YYYY-M-D" id='endDate' name="endDate" />
             </FormItem>
             <FormItem label="预计到店时间:">
                 <TimePicker id='expectedTime' name="expectedTime" defaultValue="17:00:00" />
@@ -65,10 +75,11 @@ const HotelRsvForm = (props: IProps) => {
                 <RadioGroup defaultValue={0} dataSource={radioList} id='payType' name='payType' />
             </FormItem>
             <FormItem label="需支付：">
-                <div className={styles.price}>￥<span style={{ fontSize: '20px' }}>280</span></div>
+                <div className={styles.price}>￥<span style={{ fontSize: '20px' }}>{(endDate.diff(startDate, 'day') + 1) * originalPrice}</span></div>
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
-                <Form.Submit validate type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
+                <a href="http://localhost:88/api/order/payOrder?orderSn=1234322">支付宝</a>
+                <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
             </FormItem>
         </Form>
     </div>
