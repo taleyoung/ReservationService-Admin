@@ -28,9 +28,10 @@ const asideMenuConfig = [
         path: '/admin/hotel',
       },
       {
-        name: '客房订单管理',
-        path: '/admin/hotel-room',
-      }
+        name: '客房登记查询',
+        path: '/admin/hotel/checkIn',
+      },
+      {name: '订单查询', path: '/admin/hotel/order'}
     ]
   },
   {

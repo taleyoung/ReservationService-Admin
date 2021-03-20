@@ -48,7 +48,6 @@ const appConfig: IAppConfig = {
             default:
               break;
           }
-          console.log('response :>> ', response);
           return response.data;
         },
         onError: (error: any) => {

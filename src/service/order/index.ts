@@ -5,7 +5,7 @@ import {baseService} from '../index'
 const prefix = 'order';
 const payOrderUrl = `${prefix}/payOrder`
 const hotelOrderUrl = `${prefix}/hotel-order`;
-const hotelCheckInUrl = `${prefix}/hotel-check-in`
+const hotelCheckInUrl = `${prefix}/hotel-check-in`;
 
 const payOrder =
     (orderSn) => {

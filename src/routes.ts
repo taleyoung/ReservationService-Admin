@@ -1,5 +1,7 @@
 import BasicLayout from '@/components/BasicLayout';
+import AdminCheckIn from '@/pages/AdminCheckIn'
 import AdminHotel from '@/pages/AdminHotel'
+import AdminHotelOrder from '@/pages/AdminHotelOrder'
 import AdminHotelRoom from '@/pages/AdminHotelRoom'
 import AdminMeeting from '@/pages/AdminMeeting'
 import AdminMeetingRoom from '@/pages/AdminMeetingRoom';
@@ -24,6 +26,8 @@ const routerConfig = [
       {path: '/admin/meeting-room', exact: true, component: AdminMeetingRoom},
       {path: '/admin/meeting', exact: true, component: AdminMeeting},
       {path: '/admin/hotel', exact: true, component: AdminHotel},
+      {path: '/admin/hotel/order', exact: true, component: AdminHotelOrder},
+      {path: '/admin/hotel/checkIn', exact: true, component: AdminCheckIn},
       {path: '/admin/hotel/:id', exact: true, component: AdminHotelRoom},
     ],
   },

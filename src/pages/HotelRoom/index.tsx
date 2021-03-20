@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useRequest } from 'ice'
-import { Divider, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Avatar, Button } from '@alifd/next';
+import moment from 'moment'
+
+import { Divider, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Button, DatePicker } from '@alifd/next';
 import { hotelService } from '@/service/room'
 import hotelDeafultImg from '@/assets/images/hotel.jpg'
 
 import HotelInfo from './HotelInfo'
 import HotelRsvForm from './HotelRsvForm'
 import styles from './index.module.scss'
-import { Item } from '@alifd/next/types/step';
 
+const nowDate = moment().format("YYYY-MM-DD")
 const { Cell } = ResponsiveGrid;
 const { Row, Col } = Grid;
 const { Item: ListItem } = List;
@@ -25,13 +27,14 @@ const sliderNodes = slides.map((item, index) => <div key={index} className="slid
 
 const HotelRoom = () => {
     const params = useParams();
-    const { data: hotelData, request } = useRequest(hotelService.getById);
+    const { data: hotelData, request } = useRequest(hotelService.getByIdAndDate);
     const [rsvDrawerVisible, setRsvDrawerVisible] = useState(false)
     const [hotelRoomInfo, setHotelRoomInfo] = useState();
+    const [date, setDate] = useState<string>(nowDate);
 
     useEffect(() => {
-        request(params.id)
-    }, [])
+        request(params.id, date)
+    }, [date])
 
     const showRsvHotel = (roomInfo) => {
         setRsvDrawerVisible(true);
@@ -39,9 +42,10 @@ const HotelRoom = () => {
     }
 
     const renderExtra = (roomInfo) => {
+        const { wareWithDate } = roomInfo;
         return <div>
             <div className={styles.price}><span style={{ fontSize: '18px' }}>￥</span>{roomInfo.originalPrice}</div>
-            <Button type='secondary' onClick={() => showRsvHotel(roomInfo)}>立即预订</Button>
+            <Button disabled={!wareWithDate} type='secondary' onClick={() => showRsvHotel(roomInfo)}>{wareWithDate ? '立即预订' : '房间已订完'}</Button>
         </div>
     }
     if (!hotelData) {
@@ -66,6 +70,14 @@ const HotelRoom = () => {
                 ></HotelInfo>
             </Cell>
         </ResponsiveGrid>
+
+        <Row justify='center' style={{ marginTop: '30px' }}>
+            <Col span='16'>
+                日期选择：<DatePicker value={date} onChange={(v) => setDate(v as string)}></DatePicker>
+            </Col>
+
+        </Row>
+
         <Row justify='center' >
             <Col span='16'>
                 <Tab className={styles.tab}>
@@ -79,8 +91,8 @@ const HotelRoom = () => {
                                     // <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>大</Avatar>
                                     media={<img className={styles.img} src={hotelDeafultImg}></img>}
                                 >
-                                    <div>14㎡ 大床 有窗</div>
-                                    <div>仅剩2间</div>
+                                    <div>{item.areaCount}㎡ 大床 有窗</div>
+                                    <div>仅剩<span className={styles.ware}>{item.wareWithDate}</span>间</div>
                                 </ListItem>
                             ))}
                         </List>

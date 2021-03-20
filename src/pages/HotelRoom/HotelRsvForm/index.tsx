@@ -39,7 +39,9 @@ const HotelRsvForm = (props: IProps) => {
             totalPrice: days * originalPrice,
             userId: 1,
             userName: "滕野",
-            hotelRoomTypeId
+            hotelRoomTypeId,
+            hotelName,
+            hotelRoomTypeName,
         }
         const res = await request(data);
         console.log('res', res)
@@ -62,7 +64,7 @@ const HotelRsvForm = (props: IProps) => {
             <FormItem label="身份证号:">
                 <Input placeholder="请输入身份证号" id="personIdNumber" name="personIdNumber" />
             </FormItem>
-            <FormItem label="入职日期:">
+            <FormItem label="入住日期:">
                 <DatePicker onChange={(v) => setStartDate(v as Moment)} defaultValue={moment()} format="YYYY-M-D" id='startDate' name="startDate" />
             </FormItem>
             <FormItem label="离开日期:">
