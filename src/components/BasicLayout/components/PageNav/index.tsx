@@ -62,7 +62,7 @@ function getSubMenuOrItem(item: IMenuItem, index?: number | string, auth?: any) 
   }
   const navItem = (
     <NavItem key={item.path} icon={item.icon}>
-      <Link to={item.path}>
+      <Link to={item.path || '/'}>
         {item.name}
       </Link>
     </NavItem>

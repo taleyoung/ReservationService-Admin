@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRequest } from 'ice'
 import { hotelCheckInService } from '@/service/order'
-import { Divider, Table, Tag, Pagination } from '@alifd/next'
-import { OrderStatusEnum, TagColorEnum } from '@/constant'
+import { Divider, Table, Tag, Pagination, Button, Step, Balloon } from '@alifd/next'
+import { CheckInStatusEnum, TagColorEnum } from '@/constant'
+import { IPageData } from '@/interface'
 
 
 const tableColumn = [
@@ -35,11 +36,26 @@ const tableColumn = [
         dataIndex: 'status'
     }
 ]
+
+const stepItem = ['待付款', '待入住', '已入住', '已退房'];
+const defaultData = {
+    list: [],
+    totalCount: 1,
+    pageSize: 0
+}
+
 const AdminCheckIn = () => {
-    const { data: checkInData, request, loading } = useRequest(hotelCheckInService.getList, {
+    const { data, request, loading } = useRequest(hotelCheckInService.getList, {
         manual: false
     })
-    const { list = [], totalCount = 1, pageSize = 0 } = checkInData || {};
+    const { request: updateStatusService, loading: updateLoading } = useRequest(hotelCheckInService.updateStatus)
+    const [checkInData, setCheckInData] = useState<IPageData>(defaultData);
+
+    useEffect(() => {
+        if (data) {
+            setCheckInData(data);
+        }
+    }, [data])
 
     const renderTableColumn = () => {
         return tableColumn.map(item => {
@@ -48,11 +64,35 @@ const AdminCheckIn = () => {
                     key={item.dataIndex}
                     title={item.title}
                     dataIndex={item.dataIndex}
-                    cell={(v: number) => <Tag type='normal' color={TagColorEnum[v]}>{OrderStatusEnum[v]}</Tag>}
+                    cell={(v: number) => <Tag type='normal' color={TagColorEnum[v]}>{CheckInStatusEnum[v]}</Tag>}
                 />
             }
             return <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />
         })
+    }
+
+    const updateStatus = async (record, index) => {
+        const updateRes = await updateStatusService(record.orderId, index);
+        console.log('updateRes', updateRes)
+        const res = await request();
+        if (res.code === 0) {
+            setCheckInData(res.data)
+        }
+        // if (updateRes.code === 0) {
+        //     const res = await request();
+        //     if (res.code === 0) {
+        //         setCheckInData(res.data)
+        //     }
+        // }
+
+    }
+
+    const renderChangeStatus = (v, idx, record) => {
+        return <Balloon trigger={<Button>更改</Button>} triggerType="hover">
+            <Step current={v} shape="circle">
+                {stepItem.map((item, index) => <Step.Item disabled={index < v} onClick={() => updateStatus(record, index)} key={item} title={item} />)}
+            </Step>
+        </Balloon>
     }
     return <div>
         <div>
@@ -60,10 +100,11 @@ const AdminCheckIn = () => {
             <Divider></Divider>
         </div>
         <div>
-            <Table dataSource={list} loading={loading}>
+            <Table dataSource={checkInData.list} loading={loading && updateLoading}>
                 {renderTableColumn()}
+                <Table.Column key='status' dataIndex='status' title='操作' cell={(v, index, record) => renderChangeStatus(v, index, record)} />
             </Table>
-            <Pagination total={totalCount} pageSize={pageSize} onChange={(curPage) => request(curPage)} />
+            <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
         </div>
     </div>
 }

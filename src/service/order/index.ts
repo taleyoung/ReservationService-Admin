@@ -7,18 +7,28 @@ const payOrderUrl = `${prefix}/payOrder`
 const hotelOrderUrl = `${prefix}/hotel-order`;
 const hotelCheckInUrl = `${prefix}/hotel-check-in`;
 
-const payOrder =
-    (orderSn) => {
-      return request(
-          {url: payOrderUrl, method: 'GET', params: {orderSn: orderSn}})
-    }
+const payOrder = (orderSn) => {
+  return request({url: payOrderUrl, method: 'GET', params: {orderSn: orderSn}})
+};
 
 const hotelOrderService = {
   ...baseService(hotelOrderUrl),
   payOrder
-}
+};
 
-const hotelCheckInService = baseService(hotelCheckInUrl)
+
+
+const updateStatus = (orderId: number, status: number) => {
+  return request({
+    url: `${hotelCheckInUrl}/status`,
+    method: 'PUT',
+    data: {orderId, status}
+  })
+};
+const hotelCheckInService = {
+  ...baseService(hotelCheckInUrl),
+  updateStatus
+}
 
 export {
   hotelOrderService, hotelCheckInService
