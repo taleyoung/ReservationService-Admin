@@ -2,7 +2,7 @@ import React from 'react'
 import { useRequest } from 'ice'
 import { hotelOrderService } from '@/service/order'
 import { Divider, Table, Pagination, Tag } from '@alifd/next'
-import { OrderStatusEnum, TagColorEnum } from '@/constant'
+import { OrderStatusEnum, TagColorEnum, payTypeEnum } from '@/constant'
 
 const tableColumn = [
     {
@@ -48,6 +48,14 @@ const AdminHotelOrder = () => {
                     title={item.title}
                     dataIndex={item.dataIndex}
                     cell={(v: number) => <Tag type='normal' color={TagColorEnum[v]}>{OrderStatusEnum[v]}</Tag>}
+                />
+            }
+            if (item.dataIndex === 'payType') {
+                return <Table.Column
+                    key={item.dataIndex}
+                    title={item.title}
+                    dataIndex={item.dataIndex}
+                    cell={(v: number) => <Tag type='normal'>{payTypeEnum[v]}</Tag>}
                 />
             }
             return <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />

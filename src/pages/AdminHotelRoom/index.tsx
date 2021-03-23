@@ -1,8 +1,8 @@
 import React from 'react'
-import { useRequest } from 'ice'
-import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
+import { useRequest, useRouteMatch } from 'ice'
+import { Divider } from '@alifd/next'
 
-import { hotelRoomTypeService } from '@/service/room'
+import { hotelRoomTypeService, hotelService } from '@/service/room'
 import BaseCrudTable from '@/components/BaseCrudTable'
 
 const tableColumn = [{
@@ -37,21 +37,11 @@ const addServiceExtraData = {
 }
 
 const AdminHotelRoom = () => {
-    const getListService = useRequest(hotelRoomTypeService.getList, {
-        manual: false
-    });
+    const match = useRouteMatch();
+    const getListService = useRequest(hotelService.getRoomTypeByHotelId(match.params.id));
     const deleteService = useRequest(hotelRoomTypeService.delete);
     const addService = useRequest(hotelRoomTypeService.add);
     const updateService = useRequest(hotelRoomTypeService.update)
-
-    // const renderHandle = (v: any, index: number) => {
-    //     return <div>
-    //         {/* <Button type='secondary' onClick={() => update(index)}>修改</Button>
-    //         <Divider direction='ver'></Divider> */}
-    //         <Button warning loading={deleteLoading} onClick={() => deleteRoomReq(index)}>删除</Button>
-    //     </div>
-    // }
-
 
     return <div>
         <div>

@@ -11,9 +11,16 @@ const payOrder = (orderSn) => {
   return request({url: payOrderUrl, method: 'GET', params: {orderSn: orderSn}})
 };
 
+const testPayAndSuccess =
+    (data) => {
+      return request(
+          {url: hotelOrderUrl + '/testPayAndSuccess', method: 'POST', data})
+    }
+
 const hotelOrderService = {
   ...baseService(hotelOrderUrl),
-  payOrder
+  payOrder,
+  testPayAndSuccess
 };
 
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useRequest } from 'ice'
 import moment from 'moment'
 
-import { Divider, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Button, DatePicker } from '@alifd/next';
+import { Divider, Loading, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Button, DatePicker } from '@alifd/next';
 import { hotelService } from '@/service/room'
 import hotelDeafultImg from '@/assets/images/hotel.jpg'
 
@@ -49,7 +49,7 @@ const HotelRoom = () => {
         </div>
     }
     if (!hotelData) {
-        return null;
+        return <Loading fullScreen></Loading>
     }
     return <div>
         <div>

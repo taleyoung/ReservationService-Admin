@@ -90,7 +90,7 @@ const AdminCheckIn = () => {
     const renderChangeStatus = (v, idx, record) => {
         return <Balloon trigger={<Button>更改</Button>} triggerType="hover">
             <Step current={v} shape="circle">
-                {stepItem.map((item, index) => <Step.Item disabled={index < v} onClick={() => updateStatus(record, index)} key={item} title={item} />)}
+                {stepItem.map((item, index) => <Step.Item disabled={index < v ? true : false} onClick={() => updateStatus(record, index)} key={item} title={item} />)}
             </Step>
         </Balloon>
     }
@@ -100,7 +100,7 @@ const AdminCheckIn = () => {
             <Divider></Divider>
         </div>
         <div>
-            <Table dataSource={checkInData.list} loading={loading && updateLoading}>
+            <Table dataSource={checkInData.list} loading={loading || updateLoading}>
                 {renderTableColumn()}
                 <Table.Column key='status' dataIndex='status' title='操作' cell={(v, index, record) => renderChangeStatus(v, index, record)} />
             </Table>

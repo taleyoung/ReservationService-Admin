@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { useRequest } from 'ice'
+import { useRequest, useHistory } from 'ice'
 import { Form, Input, DatePicker, TimePicker, Radio } from '@alifd/next';
 import moment, { Moment } from 'moment'
 import { hotelOrderService } from '@/service/order/index'
 
 import styles from './index.module.scss'
 
-const nowDate = moment().format("YYYY-MM-DD")
+const nowDate = moment().format("YYYY-MM-DD");
+const nextDate = moment().add(1, 'days').format("YYYY-MM-DD");
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -27,15 +28,17 @@ interface IProps {
 
 const HotelRsvForm = (props: IProps) => {
     const { hotelRoomInfo } = props;
+    const history = useHistory();
     const { hotelName, name: hotelRoomTypeName, id: hotelRoomTypeId, originalPrice } = hotelRoomInfo;
     const [startDate, setStartDate] = useState(nowDate);
-    const [endDate, setEndDate] = useState(nowDate);
+    const [endDate, setEndDate] = useState(nextDate);
     const { request, loading } = useRequest(hotelOrderService.add);
+    const { request: testPayAndSuccess, loading: testPayLoading } = useRequest(hotelOrderService.testPayAndSuccess);
     // const { request: payOrder } = useRequest(hotelOrderService.payOrder)
 
-    const submitMeeting = async (value) => {
+    const days = moment(new Date(endDate)).diff(moment(new Date(startDate)), 'day') + 1;
 
-        const days = moment(new Date(endDate)).diff(moment(new Date(startDate)), 'day') + 1
+    const submitOrder = async (value, isTest = false) => {
 
         const data = {
             ...value,
@@ -48,10 +51,14 @@ const HotelRsvForm = (props: IProps) => {
             hotelName,
             hotelRoomTypeName,
         }
-        const res = await request(data);
-        // if (res.code === 0) {
-        //     console.log('success')
-        // }
+        if (isTest) {
+            const res = await testPayAndSuccess(data);
+            console.log('res', res);
+            history.push('/home');
+            return;
+        } else {
+            await request(data);
+        }
 
     }
     return <div>
@@ -69,10 +76,10 @@ const HotelRsvForm = (props: IProps) => {
                 <Input placeholder="请输入身份证号" id="personIdNumber" name="personIdNumber" />
             </FormItem>
             <FormItem label="入住日期:">
-                <DatePicker onChange={(v) => setStartDate(v as string)} defaultValue={nowDate} format="YYYY-M-D" id='startDate' name="startDate" />
+                <DatePicker onChange={(v) => setStartDate(v as string)} defaultValue={startDate} format="YYYY-M-D" id='startDate' name="startDate" />
             </FormItem>
             <FormItem label="离开日期:">
-                <DatePicker onChange={(v) => setEndDate(v as string)} defaultValue={nowDate} format="YYYY-M-D" id='endDate' name="endDate" />
+                <DatePicker onChange={(v) => setEndDate(v as string)} defaultValue={endDate} format="YYYY-M-D" id='endDate' name="endDate" />
             </FormItem>
             <FormItem label="预计到店时间:">
                 <TimePicker id='expectedTime' name="expectedTime" defaultValue="17:00:00" />
@@ -81,11 +88,12 @@ const HotelRsvForm = (props: IProps) => {
                 <RadioGroup defaultValue={0} dataSource={radioList} id='payType' name='payType' />
             </FormItem>
             <FormItem label="需支付：">
-                {/* <div className={styles.price}>￥<span style={{ fontSize: '20px' }}>{(endDate.diff(startDate, 'day') + 1) * originalPrice}</span></div> */}
+                <div className={styles.price}>￥<span style={{ fontSize: '20px' }}>{days * originalPrice}</span></div>
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
-                <a href="http://localhost:88/api/order/payOrder?orderSn=1234322">支付宝</a>
-                <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
+                {/* <a href="http://localhost:88/api/order/payOrder?orderSn=1234322">支付宝</a> */}
+                <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitOrder(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
+                <Form.Submit loading={testPayLoading} validate type="secondary" onClick={(v) => submitOrder(v, true)} style={{ marginRight: 10 }}>测试：预订并支付成功</Form.Submit>
             </FormItem>
         </Form>
     </div>

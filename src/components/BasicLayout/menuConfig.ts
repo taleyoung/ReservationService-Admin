@@ -2,8 +2,8 @@ const headerMenuConfig = [];
 
 const asideMenuConfig = [
   {
-    name: '快速预订',
-    path: '/',
+    name: '首页',
+    path: '/home',
     icon: 'smile',
   },
   {
@@ -16,9 +16,7 @@ const asideMenuConfig = [
     path: '/meeting',
     icon: 'calendar',
   },
-  {
-    name: '===后台管理===',
-  },
+  {name: '===后台管理===', path: '/'},
   {
     name: '酒店客房管理',
     icon: 'calendar',

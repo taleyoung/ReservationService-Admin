@@ -6,6 +6,7 @@ import AdminHotelRoom from '@/pages/AdminHotelRoom'
 import AdminMeeting from '@/pages/AdminMeeting'
 import AdminMeetingRoom from '@/pages/AdminMeetingRoom';
 import Dashboard from '@/pages/Dashboard';
+import HomePage from '@/pages/HomePage'
 import HotelList from '@/pages/HotelList'
 import HotelRoom from '@/pages/HotelRoom'
 import MeetingRoom from '@/pages/MeetingRoom'
@@ -20,6 +21,7 @@ const routerConfig = [
         exact: true,
         component: Dashboard,
       },
+      {path: '/home', exact: true, component: HomePage},
       {path: '/meeting', exact: true, component: MeetingRoom},
       {path: '/hotel', exact: true, component: HotelList},
       {path: '/hotel/:id', exact: true, component: HotelRoom},
