@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Shell, ConfigProvider, Icon, Avatar } from '@alifd/next';
+import { Shell, ConfigProvider, Avatar } from '@alifd/next';
 import PageNav from './components/PageNav';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
+import TopAction from './components/TopAction'
 
 (function () {
   const throttle = function (type: string, name: string, obj: Window = window) {
@@ -83,8 +84,7 @@ export default function BasicLayout({
           }}
         />
         <Shell.Action>
-          <Avatar style={{ backgroundColor: '#87d068' }} icon="account" />
-          <span style={{ marginLeft: 10 }}>你好，滕野</span>
+          <TopAction></TopAction>
         </Shell.Action>
         <Shell.Navigation>
           <PageNav />

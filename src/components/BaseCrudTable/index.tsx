@@ -22,7 +22,7 @@ const BaseCrudTable = (props: IProps) => {
 
 
     useEffect(() => {
-        request();
+        request({});
     }, [])
 
     const add = () => {
@@ -62,7 +62,7 @@ const BaseCrudTable = (props: IProps) => {
                     {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number, record: any) => renderHandle(v, index, record)} />
                 </Table>
-                <Pagination total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(curPage) => request(curPage)} />
+                <Pagination total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(page) => request({ page })} />
             </div>
             <Drawer title="编辑酒店"
                 placement="right"

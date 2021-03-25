@@ -1,5 +1,6 @@
 import React from 'react'
 import { useRequest, useHistory } from 'ice'
+import { useCookies } from 'react-cookie'
 import { Form, Input, Grid, Message } from '@alifd/next';
 import { userService } from '@/service/user'
 import styles from './index.module.scss'
@@ -14,12 +15,16 @@ const formItemLayout = {
 };
 
 const Login = () => {
-    const { request: login } = useRequest(userService.login);
+    const { request: login, loading } = useRequest(userService.login);
+    const [cookie, setCookie, removeCookie] = useCookies();
     const history = useHistory();
 
     const loginSubmit = async (v) => {
         const res = await login(v);
         if (res.loginSuccess) {
+            setCookie("jwtToken", res.jwtToken, { path: "/" });
+            setCookie("username", res.userInfo.username, { path: "/" });
+            setCookie("userId", res.userInfo.id, { path: "/" });
             history.push('/home');
         } else {
             Message.warning(res.msg);
@@ -37,7 +42,7 @@ const Login = () => {
                         <FormItem label="密码:">
                             <Input.Password name="password" />
                         </FormItem>
-                        <Form.Submit validate type="primary" style={{ marginRight: 10 }} onClick={(v) => loginSubmit(v)}>登录</Form.Submit>
+                        <Form.Submit loading={loading} validate type="primary" style={{ marginRight: 10 }} onClick={(v) => loginSubmit(v)}>登录</Form.Submit>
                         <Form.Submit validate type="secondary" style={{ marginRight: 10 }}>注册</Form.Submit>
                     </Form>
                 </div>

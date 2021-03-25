@@ -74,7 +74,7 @@ const AdminCheckIn = () => {
     const updateStatus = async (record, index) => {
         const updateRes = await updateStatusService(record.orderId, index);
         console.log('updateRes', updateRes)
-        const res = await request();
+        const res = await request({});
         if (res.code === 0) {
             setCheckInData(res.data)
         }
@@ -104,7 +104,7 @@ const AdminCheckIn = () => {
                 {renderTableColumn()}
                 <Table.Column key='status' dataIndex='status' title='操作' cell={(v, index, record) => renderChangeStatus(v, index, record)} />
             </Table>
-            <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
+            <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(page) => request({ page })} />
         </div>
     </div>
 }

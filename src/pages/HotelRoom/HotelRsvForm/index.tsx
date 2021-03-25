@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useRequest, useHistory } from 'ice'
 import { Form, Input, DatePicker, TimePicker, Radio } from '@alifd/next';
+import { useCookies } from 'react-cookie'
 import moment, { Moment } from 'moment'
 import { hotelOrderService } from '@/service/order/index'
 
@@ -35,6 +36,7 @@ const HotelRsvForm = (props: IProps) => {
     const { request, loading } = useRequest(hotelOrderService.add);
     const { request: testPayAndSuccess, loading: testPayLoading } = useRequest(hotelOrderService.testPayAndSuccess);
     // const { request: payOrder } = useRequest(hotelOrderService.payOrder)
+    const [cookie] = useCookies();
 
     const days = moment(new Date(endDate)).diff(moment(new Date(startDate)), 'day') + 1;
 
@@ -45,8 +47,8 @@ const HotelRsvForm = (props: IProps) => {
             startDate: moment(startDate).format('YYYY-MM-DD'),
             endDate: moment(endDate).format('YYYY-MM-DD'),
             totalPrice: days * originalPrice,
-            userId: 1,
-            userName: "滕野",
+            userId: cookie['userId'],
+            userName: cookie['username'],
             hotelRoomTypeId,
             hotelName,
             hotelRoomTypeName,

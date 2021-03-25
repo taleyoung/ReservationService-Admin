@@ -36,7 +36,7 @@ const AdminUser = () => {
             <Table dataSource={userInfoData.list} loading={loading}>
                 {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
             </Table>
-            <Pagination total={userInfoData.totalCount} pageSize={userInfoData.pageSize} onChange={(curPage) => request(curPage)} />
+            <Pagination total={userInfoData.totalCount} pageSize={userInfoData.pageSize} onChange={(page) => request({ page })} />
         </div>
     </div>
 }
