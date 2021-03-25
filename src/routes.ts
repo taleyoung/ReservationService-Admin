@@ -5,13 +5,16 @@ import AdminHotelOrder from '@/pages/AdminHotelOrder'
 import AdminHotelRoom from '@/pages/AdminHotelRoom'
 import AdminMeeting from '@/pages/AdminMeeting'
 import AdminMeetingRoom from '@/pages/AdminMeetingRoom';
+import AdminUser from '@/pages/AdminUser'
 import Dashboard from '@/pages/Dashboard';
 import HomePage from '@/pages/HomePage'
 import HotelList from '@/pages/HotelList'
 import HotelRoom from '@/pages/HotelRoom'
+import Login from '@/pages/Login'
 import MeetingRoom from '@/pages/MeetingRoom'
 
 const routerConfig = [
+  {path: '/login', exact: true, component: Login},
   {
     path: '/',
     component: BasicLayout,
@@ -31,7 +34,9 @@ const routerConfig = [
       {path: '/admin/hotel/order', exact: true, component: AdminHotelOrder},
       {path: '/admin/hotel/checkIn', exact: true, component: AdminCheckIn},
       {path: '/admin/hotel/:id', exact: true, component: AdminHotelRoom},
+      {path: '/admin/user', exact: true, component: AdminUser},
     ],
   },
+
 ];
 export default routerConfig;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shell, ConfigProvider } from '@alifd/next';
+import { Shell, ConfigProvider, Icon, Avatar } from '@alifd/next';
 import PageNav from './components/PageNav';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
@@ -82,7 +82,10 @@ export default function BasicLayout({
             marginRight: 10,
           }}
         />
-        <Shell.Action />
+        <Shell.Action>
+          <Avatar style={{ backgroundColor: '#87d068' }} icon="account" />
+          <span style={{ marginLeft: 10 }}>你好，滕野</span>
+        </Shell.Action>
         <Shell.Navigation>
           <PageNav />
         </Shell.Navigation>

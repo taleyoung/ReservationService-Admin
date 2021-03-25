@@ -16,7 +16,6 @@ const asideMenuConfig = [
     path: '/meeting',
     icon: 'calendar',
   },
-  {name: '===后台管理===', path: '/'},
   {
     name: '酒店客房管理',
     icon: 'calendar',
@@ -45,6 +44,11 @@ const asideMenuConfig = [
         path: '/admin/meeting',
       }
     ]
+  },
+  {
+    name: '用户管理',
+    icon: 'calendar',
+    children: [{name: '所有用户', path: '/admin/user'}]
   },
 ];
 

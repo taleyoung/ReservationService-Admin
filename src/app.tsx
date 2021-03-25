@@ -43,7 +43,7 @@ const appConfig: IAppConfig = {
               Message.success('删除成功');
               break;
             case 'post':
-              Message.success('添加成功');
+              Message.success('操作成功');
               break;
             default:
               break;

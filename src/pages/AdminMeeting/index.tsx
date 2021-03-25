@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRequest } from 'ice'
-import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
+import { Divider, Table, Pagination } from '@alifd/next'
 import meetingService from '@/service/room/meeting'
 
 const tableColumn = [{
@@ -29,7 +29,7 @@ const tableColumn = [{
     dataIndex: 'createTime'
 }]
 const AdminMeeting = () => {
-    const { data: roomInfoData = {}, loading, request, refresh } = useRequest(meetingService.getMeetingList, {
+    const { data: roomInfoData = {}, loading, request } = useRequest(meetingService.getMeetingList, {
         manual: false
     });
 

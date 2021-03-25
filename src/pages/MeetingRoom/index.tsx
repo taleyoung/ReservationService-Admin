@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ice'
-import { Box, DatePicker, Divider, TimePicker, Button, Table, Dialog, Drawer, Tag, Search } from '@alifd/next';
-import moment, { Moment } from 'moment'
+import { Box, DatePicker, Divider, Icon, Button, Table, Dialog, Drawer, Tag, Search } from '@alifd/next';
+import moment from 'moment'
 import RoomInfoCard from '@/components/RoomInfoCard'
 import RoomRsvForm from '@/components/RoomRsvForm'
 import { MeetingRoomRsv } from '@/interface/room/meetingRoom'
@@ -82,10 +82,10 @@ const MeetingRoom = () => {
             <div>
                 <Box>
                     <Table dataSource={meetingRoomData.list} loading={loading}>
-                        <Table.Column key='name' title='会议室' dataIndex='name' cell={(v, index) => <Button text onClick={() => handleDialog(index)}>{v}</Button>} />
+                        <Table.Column key='name' title='会议室' dataIndex='name' cell={(v, index) => <div>{v}<Icon style={{ color: '#1DC11D', marginLeft: '5px', cursor: 'pointer' }} onClick={() => handleDialog(index)} type="help" /></div>} />
                         <Table.Column key='device' title='设备' dataIndex='device' />
                         <Table.Column key='reservedTimeList' title='预订时间' dataIndex='rsvTimeList' cell={(v) => renderReservedTime(v)} />
-                        <Table.Column cell={(v, index) => <Button text onClick={() => handleRsvDrawer(index)}>立即预订</Button>} />
+                        <Table.Column cell={(v, index) => <Button type='secondary' onClick={() => handleRsvDrawer(index)}>立即预订</Button>} />
                     </Table>
                 </Box>
                 <Dialog
