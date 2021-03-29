@@ -73,17 +73,10 @@ const AdminCheckIn = () => {
 
     const updateStatus = async (record, index) => {
         const updateRes = await updateStatusService(record.orderId, index);
-        console.log('updateRes', updateRes)
         const res = await request({});
         if (res.code === 0) {
             setCheckInData(res.data)
         }
-        // if (updateRes.code === 0) {
-        //     const res = await request();
-        //     if (res.code === 0) {
-        //         setCheckInData(res.data)
-        //     }
-        // }
 
     }
 

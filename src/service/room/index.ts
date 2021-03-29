@@ -10,14 +10,13 @@ const getByIdAndDate = (id, date) => {
 };
 
 
-const getRoomTypeByHotelId = (hotelId: number) =>
-    (curPage?: number, limit?: number) => {
-      return request({
-        url: `${hotelUrl}/${hotelId}/hotel-room-type`,
-        method: 'GET',
-        params: {page: curPage || 1, limit: limit || 10}
-      })
-    };
+const getRoomTypeByHotelId = (hotelId: number) => (params) => {
+  return request({
+    url: `${hotelUrl}/${hotelId}/hotel-room-type`,
+    method: 'GET',
+    params: {page: 1, limit: 10, ...params}
+  })
+};
 
 const hotelService = {
   ...baseService(hotelUrl),

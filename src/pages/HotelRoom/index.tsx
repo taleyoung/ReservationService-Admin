@@ -27,14 +27,20 @@ const sliderNodes = slides.map((item, index) => <div key={index} className="slid
 
 const HotelRoom = () => {
     const params = useParams();
-    const { data: hotelData, request } = useRequest(hotelService.getByIdAndDate);
+    const { data: hotelData, request, loading } = useRequest(hotelService.getByIdAndDate);
     const [rsvDrawerVisible, setRsvDrawerVisible] = useState(false)
     const [hotelRoomInfo, setHotelRoomInfo] = useState();
     const [date, setDate] = useState<string>(nowDate);
+    const [hotelState, setHotelState] = useState(hotelData)
 
     useEffect(() => {
-        request(params.id, date)
+        updateHotelState()
     }, [date])
+
+    const updateHotelState = async () => {
+        const res = await request(params.id, date);
+        setHotelState(res);
+    }
 
     const showRsvHotel = (roomInfo) => {
         setRsvDrawerVisible(true);
@@ -82,8 +88,8 @@ const HotelRoom = () => {
             <Col span='16'>
                 <Tab className={styles.tab}>
                     <TabItem title="房间预订" key="1">
-                        <List size='medium' className={styles.list}>
-                            {hotelData.rooms.map(item => (
+                        <List size='medium' className={styles.list} loading={loading}>
+                            {hotelState && hotelState.rooms && hotelState.rooms.map(item => (
                                 <ListItem
                                     key={item.id}
                                     extra={renderExtra(item)}
