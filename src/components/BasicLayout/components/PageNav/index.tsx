@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'ice';
 import { Nav } from '@alifd/next';
-import { asideMenuConfig } from '../../menuConfig';
+import { useCookies } from 'react-cookie'
+import { roleMenuMap } from '../../menuConfig';
 
 const { SubNav } = Nav;
 const NavItem = Nav.Item;
@@ -74,12 +75,15 @@ function getSubMenuOrItem(item: IMenuItem, index?: number | string, auth?: any) 
 const Navigation = (props, context) => {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
+  const [cookie] = useCookies();
+  const role = parseInt(cookie['role']);
+
   const { location } = props;
   const { pathname } = location;
   const { isCollapse } = context;
 
   useEffect(() => {
-    const curSubNav = asideMenuConfig.find((menuConfig) => {
+    const curSubNav = roleMenuMap[role].find((menuConfig) => {
       return menuConfig.children && checkChildPathExists(menuConfig);
     });
 
@@ -107,7 +111,7 @@ const Navigation = (props, context) => {
       mode={isCollapse ? 'popup' : 'inline'}
       onOpen={setOpenKeys}
     >
-      {getNavMenuItems(asideMenuConfig, 0, AUTH_CONFIG)}
+      {getNavMenuItems(roleMenuMap[role], 0, AUTH_CONFIG)}
     </Nav>
   );
 };

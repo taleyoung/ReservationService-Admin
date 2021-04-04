@@ -28,11 +28,12 @@ const HotelList = () => {
         </div>
         <Loading visible={loading} fullScreen={true}>
             <Box direction='row' wrap={true} spacing={20} padding={20} >
-                {hotelData && hotelData.list.map(item => <Box key={item.id} onClick={() => history.push(`hotel/${item.id}`)}>
+                {hotelData && hotelData.list.map((item, index) => <Box key={item.id} onClick={() => history.push(`hotel/${item.id}`)}>
                     <HotelCard
                         title={item.name}
                         price={item.price}
                         location={item.location}
+                        index={index}
                         score={item.score}></HotelCard>
                 </Box>)}
 

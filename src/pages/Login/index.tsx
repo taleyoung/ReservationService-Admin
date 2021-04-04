@@ -27,6 +27,7 @@ const Login = () => {
             setCookie("jwtToken", res.jwtToken, { path: "/" });
             setCookie("username", res.userInfo.username, { path: "/" });
             setCookie("userId", res.userInfo.id, { path: "/" });
+            setCookie("role", res.userInfo.role, { path: "/" });
             history.push('/home');
         } else {
             Message.warning(res.msg);

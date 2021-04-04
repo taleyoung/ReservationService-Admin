@@ -59,13 +59,15 @@ const MeetingRoom = () => {
     }
 
     const renderReservedTime = (value) => {
+        if (value.length < 1) {
+            return <Tag color='green'>空闲</Tag>
+        }
         return <TagGroup>
             {value && value.map(v => <Tag key={v.start} type="normal" color='orange' onClick={() => showMeetingInfo(v.meetingId)}>{`${v.start} - ${v.end}`}</Tag>)}
         </TagGroup>
     }
 
     const searchRoom = (v: string) => {
-        console.log('v :>> ', v, new Date(v));
         setSearchDate(v);
         getMeetingRoom({ date: new Date(v) })
     }

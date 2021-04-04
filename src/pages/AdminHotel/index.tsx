@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useRequest, Link, useHistory } from 'ice'
-import { Divider, Table, Button, Drawer, Pagination } from '@alifd/next'
+import { useRequest, useHistory } from 'ice'
+import { Divider, Table, Button, Drawer, Pagination, Tag } from '@alifd/next'
 import { hotelService } from '@/service/room'
 import RoomInfoForm from '@/components/RoomInfoForm'
 
@@ -61,6 +61,28 @@ const AdminHotel = () => {
         history.push(`/admin/hotel/${record.id}`)
     }
 
+    const renderColumn = () => {
+        return tableColumn.map(item => {
+            if (item.dataIndex === 'score') {
+                return <Table.Column
+                    key={item.dataIndex}
+                    title={item.title}
+                    dataIndex={item.dataIndex}
+                    cell={(v) => <Tag type='primary' color='turquoise'>{v}</Tag>}
+                />
+            }
+            if (item.dataIndex === 'description') {
+                return <Table.Column
+                    key={item.dataIndex}
+                    title={item.title}
+                    dataIndex={item.dataIndex}
+                    cell={(v) => <Tag type='normal' color='green'>{v}</Tag>}
+                />
+            }
+            return <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />
+        })
+    }
+
     const renderHandle = (v: any, index: number) => {
         return <div>
             <Button type='secondary' onClick={() => update(index)}>修改</Button>
@@ -78,7 +100,7 @@ const AdminHotel = () => {
             <Button type='primary' onClick={() => add()}>新增酒店</Button>
             <div>
                 <Table dataSource={hotelData.list} loading={loading}>
-                    {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
+                    {renderColumn()}
                     <Table.Column key='room' title='房间管理' dataIndex='room' cell={(v: any, index: number, record) => <Button onClick={() => toRoomTypePage(record)}>查看</Button>} />
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
                 </Table>

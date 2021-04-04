@@ -6,4 +6,5 @@ const TagColorEnum = ['red', 'green', 'orange', 'blue', 'yellow'];
 const payTypeEnum = ['支付宝', '微信'];
 
 
+
 export {OrderStatusEnum, CheckInStatusEnum, TagColorEnum, payTypeEnum}

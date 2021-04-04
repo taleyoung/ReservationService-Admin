@@ -5,6 +5,10 @@ import moment from 'moment'
 import { Divider, Loading, Slider, ResponsiveGrid, Tab, List, Drawer, Grid, Button, DatePicker } from '@alifd/next';
 import { hotelService } from '@/service/room'
 import hotelDeafultImg from '@/assets/images/hotel.jpg'
+import hotelRoomImg01 from '@/assets/images/hotelRoom01.jpeg'
+import hotelRoomImg02 from '@/assets/images/hotelRoom02.jpeg'
+import hotelRoomImg03 from '@/assets/images/hotelRoom03.jpeg'
+import hotelRoomImg04 from '@/assets/images/hotelRoom04.jpeg'
 
 import HotelInfo from './HotelInfo'
 import HotelRsvForm from './HotelRsvForm'
@@ -17,13 +21,10 @@ const { Item: ListItem } = List;
 const { Item: TabItem } = Tab;
 
 const slides = [
-    { url: 'https://img.alicdn.com/tps/TB1bewbNVXXXXc5XXXXXXXXXXXX-1000-300.png', text: 'Tape Player Skin Design Competition' },
-    { url: 'https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg', text: 'Mobile Phone Taobao Skin Call' },
-    { url: 'https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg', text: 'Design Enabling Public Welfare' },
-    { url: 'https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg', text: 'Amoy Doll Design Competition' }
+    hotelRoomImg01, hotelRoomImg02, hotelRoomImg03, hotelRoomImg04
 ];
 
-const sliderNodes = slides.map((item, index) => <div key={index} className="slider-img-wrapper"><img draggable={false} src={item.url} alt={item.text} /></div>);
+const sliderNodes = slides.map((item, index) => <div key={index} className={styles['slider-img-wrapper']}><img className={styles['slider-img']} draggable={false} src={item} alt='' /></div>);
 
 const HotelRoom = () => {
     const params = useParams();

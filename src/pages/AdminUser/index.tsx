@@ -1,7 +1,8 @@
 import React from 'react'
 import { useRequest } from 'ice'
-import { Divider, Table, Pagination } from '@alifd/next'
+import { Divider, Table, Pagination, Tag } from '@alifd/next'
 import { userService } from '@/service/user'
+import { roleEnum, statusEnum } from '@/constant/user'
 
 const tableColumn = [{
     title: '用户昵称',
@@ -27,6 +28,28 @@ const AdminUser = () => {
         manual: false
     });
 
+    const renderTableColumn = () => {
+        return tableColumn.map(item => {
+            if (item.dataIndex === 'status') {
+                return <Table.Column
+                    key={item.dataIndex}
+                    title={item.title}
+                    dataIndex={item.dataIndex}
+                    cell={(v: number) => <Tag type='normal' color='green'>{statusEnum[v]}</Tag>}
+                />
+            }
+            if (item.dataIndex === 'role') {
+                return <Table.Column
+                    key={item.dataIndex}
+                    title={item.title}
+                    dataIndex={item.dataIndex}
+                    cell={(v: number) => <Tag type='normal'>{roleEnum[v]}</Tag>}
+                />
+            }
+            return <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />
+        })
+    }
+
     return <div>
         <div>
             <h2>会议查询</h2>
@@ -34,7 +57,8 @@ const AdminUser = () => {
         </div>
         <div>
             <Table dataSource={userInfoData.list} loading={loading}>
-                {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
+                {renderTableColumn()}
+                {/* {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)} */}
             </Table>
             <Pagination total={userInfoData.totalCount} pageSize={userInfoData.pageSize} onChange={(page) => request({ page })} />
         </div>

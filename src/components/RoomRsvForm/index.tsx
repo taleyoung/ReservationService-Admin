@@ -104,7 +104,6 @@ const RoomRsvForm = (props: IProps) => {
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
                 <Form.Submit validate type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
-                <Form.Reset >Reset</Form.Reset>
             </FormItem>
         </Form>
 
