@@ -5,6 +5,7 @@
   "dependencies": {
     "@alifd/next": "^1.19.4",
     "@alifd/theme-design-pro": "^0.x",
+    "js-export-excel": "^1.1.4",
     "moment": "^2.24.0",
     "react": "^16.4.1",
     "react-cookie": "^4.0.3",
