@@ -11,8 +11,9 @@ const appConfig: IAppConfig = {
 
     baseURL: 'http://localhost:88/api',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
+    withCredentials: true,
     // ...RequestConfig 其他参数
 
     // 拦截器

@@ -35,13 +35,13 @@ const HotelRsvForm = (props: IProps) => {
     const [endDate, setEndDate] = useState(nextDate);
     const { request, loading } = useRequest(hotelOrderService.add);
     const { request: testPayAndSuccess, loading: testPayLoading } = useRequest(hotelOrderService.testPayAndSuccess);
+    const { request: testPayAndCancel, loading: testPayAndCancelLoading } = useRequest(hotelOrderService.testPayAndCancel);
     // const { request: payOrder } = useRequest(hotelOrderService.payOrder)
     const [cookie] = useCookies();
 
     const days = moment(new Date(endDate)).diff(moment(new Date(startDate)), 'day') + 1;
 
-    const submitOrder = async (value, isTest = false) => {
-
+    const submitOrder = async (value, type: string) => {
         const data = {
             ...value,
             startDate: moment(startDate).format('YYYY-MM-DD'),
@@ -53,9 +53,12 @@ const HotelRsvForm = (props: IProps) => {
             hotelName,
             hotelRoomTypeName,
         }
-        if (isTest) {
-            const res = await testPayAndSuccess(data);
-            console.log('res', res);
+        if (type === 'testSuccess') {
+            await testPayAndSuccess(data);
+            history.push('/home');
+            return;
+        } else if (type === 'testCancel') {
+            await testPayAndCancel(data);
             history.push('/home');
             return;
         } else {
@@ -94,8 +97,9 @@ const HotelRsvForm = (props: IProps) => {
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
                 {/* <a href="http://localhost:88/api/order/payOrder?orderSn=1234322">支付宝</a> */}
-                <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitOrder(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
-                <Form.Submit loading={testPayLoading} validate type="secondary" onClick={(v) => submitOrder(v, true)} style={{ marginRight: 10 }}>测试：预订并支付成功</Form.Submit>
+                <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitOrder(v, '')} style={{ marginRight: 10 }}>立即预订</Form.Submit>
+                <Form.Submit loading={testPayLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testSuccess')} style={{ marginRight: 10 }}>测试：预订并支付成功</Form.Submit>
+                <Form.Submit loading={testPayAndCancelLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testCancel')} style={{ marginRight: 10 }}>测试：预订，支付超时</Form.Submit>
             </FormItem>
         </Form>
     </div>
