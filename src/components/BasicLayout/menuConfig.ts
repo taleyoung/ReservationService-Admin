@@ -55,7 +55,10 @@ const asideMenuConfig = [
   {
     name: '用户管理',
     icon: 'calendar',
-    children: [{name: '所有用户', path: '/admin/user'}]
+    children: [
+      {name: '所有用户', path: '/admin/user'},
+      {name: '用户留痕', path: '/admin/log'}
+    ]
   },
 ];
 
@@ -111,7 +114,10 @@ const meetingAdmin = {
 const userAdmin = {
   name: '用户管理',
   icon: 'calendar',
-  children: [{name: '所有用户', path: '/admin/user'}]
+  children: [
+    {name: '所有用户', path: '/admin/user'},
+    {name: '用户操作留痕', path: '/admin/log'}
+  ]
 }
 
 const hotelAdminMenu = [...baseMenu, hotelAdmin];

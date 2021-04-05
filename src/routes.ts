@@ -5,7 +5,8 @@ import AdminHotelOrder from '@/pages/AdminHotelOrder'
 import AdminHotelRoom from '@/pages/AdminHotelRoom'
 import AdminMeeting from '@/pages/AdminMeeting'
 import AdminMeetingRoom from '@/pages/AdminMeetingRoom';
-import AdminUser from '@/pages/AdminUser'
+import AdminOptLog from '@/pages/AdminOptLog';
+import AdminUser from '@/pages/AdminUser';
 import Dashboard from '@/pages/Dashboard';
 import HomePage from '@/pages/HomePage'
 import HotelList from '@/pages/HotelList'
@@ -35,6 +36,7 @@ const routerConfig = [
       {path: '/admin/hotel/checkIn', exact: true, component: AdminCheckIn},
       {path: '/admin/hotel/:id', exact: true, component: AdminHotelRoom},
       {path: '/admin/user', exact: true, component: AdminUser},
+      {path: '/admin/log', exact: true, component: AdminOptLog},
     ],
   },
 
