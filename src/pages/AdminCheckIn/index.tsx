@@ -78,7 +78,19 @@ const AdminCheckIn = () => {
     }, [data])
 
     const formQuery = async (v) => {
-        const res = await getListReq(v);
+        const params = {};
+        Object.keys(v).forEach(key => {
+            if (v[key] !== '') {
+                params[key] = v[key];
+            }
+        })
+        if (v['startDate'] !== null) {
+            params['startDate'] = new Date(v['startDate']);
+        }
+        if (v['endDate'] !== null) {
+            params['endDate'] = new Date(v['endDate']);
+        }
+        const res = await getListReq(params);
         setCheckInData(res);
     }
 

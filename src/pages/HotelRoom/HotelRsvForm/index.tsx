@@ -96,11 +96,16 @@ const HotelRsvForm = (props: IProps) => {
                 <div className={styles.price}>￥<span style={{ fontSize: '20px' }}>{days * originalPrice}</span></div>
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
-                {/* <a href="http://localhost:88/api/order/payOrder?orderSn=1234322">支付宝</a> */}
                 <Form.Submit loading={loading} validate type="primary" onClick={(v) => submitOrder(v, '')} style={{ marginRight: 10 }}>立即预订</Form.Submit>
-                <Form.Submit loading={testPayLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testSuccess')} style={{ marginRight: 10 }}>测试：预订并支付成功</Form.Submit>
-                <Form.Submit loading={testPayAndCancelLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testCancel')} style={{ marginRight: 10 }}>测试：预订，支付超时</Form.Submit>
             </FormItem>
+            <FormItem wrapperCol={{ offset: 6 }} >
+                <Form.Submit loading={testPayLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testSuccess')} style={{ marginRight: 10 }}>测试：预订并支付成功</Form.Submit>
+            </FormItem>
+            <FormItem wrapperCol={{ offset: 6 }} >
+                <Form.Submit loading={testPayAndCancelLoading} validate type="secondary" onClick={(v) => submitOrder(v, 'testCancel')} style={{ marginRight: 10 }}>测试：预订但支付超时</Form.Submit>
+            </FormItem>
+
+
         </Form>
     </div>
 }

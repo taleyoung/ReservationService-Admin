@@ -36,9 +36,19 @@ const updateStatus = (orderId: number, status: number) => {
     data: {orderId, status}
   })
 };
+
+const getListByUser = (params) => {
+  return request({
+    url: `${hotelCheckInUrl}/user`,
+    method: 'GET',
+    params: {page: 1, limit: 10, ...params}
+  })
+};
+
 const hotelCheckInService = {
   ...baseService(hotelCheckInUrl),
-  updateStatus
+  updateStatus,
+  getListByUser,
 }
 
 export {

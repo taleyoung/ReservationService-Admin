@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRequest } from 'ice';
 import { useCookies } from 'react-cookie'
-import { Table, Pagination, Tag } from '@alifd/next'
+import { Table, Pagination, Tag, Button } from '@alifd/next'
 import NavTitle from '@/components/NavTitle';
 import { CheckInStatusEnum, TagColorEnum } from '@/constant'
 import { hotelCheckInService } from '@/service/order';
@@ -38,12 +38,19 @@ const tableColumn = [
 ]
 
 const HomePage = () => {
-    const { data: checkInData = {}, loading, request } = useRequest(hotelCheckInService.getList);
-    const [cookie] = useCookies()
+    const { data: checkInData = {}, loading, request } = useRequest(hotelCheckInService.getListByUser);
+    const { loading: updateStatusLoading, request: updateStatus } = useRequest(hotelCheckInService.updateStatus);
+    // const [cookie] = useCookies()
 
     useEffect(() => {
-        request({ userId: cookie['userId'] })
+        request({})
     }, [])
+
+    const cancelCheckIn = async (v, val, value) => {
+        console.log('v', v, val, value)
+        await updateStatus(value.orderId, 4);
+        await request({});
+    }
 
     const renderTableColumn = () => {
         return tableColumn.map(item => {
@@ -64,6 +71,12 @@ const HomePage = () => {
         <div>
             <Table dataSource={checkInData.list} loading={loading}>
                 {renderTableColumn()}
+                <Table.Column
+                    key='handle'
+                    title='操作'
+                    dataIndex='handle'
+                    cell={(v: number, val, value) => <Button disabled={value.status !== 1} onClick={() => cancelCheckIn(v, val, value)}>取消预订</Button>}
+                />
             </Table>
             <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
         </div>
