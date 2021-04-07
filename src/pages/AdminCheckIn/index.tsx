@@ -157,7 +157,7 @@ const AdminCheckIn = () => {
                 {renderTableColumn()}
                 <Table.Column key='status' dataIndex='status' title='操作' cell={(v, index, record) => renderChangeStatus(v, index, record)} />
             </Table>
-            <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(page) => getListReq({ page })} />
+            <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(page) => getListReq({ page })} />
         </div>
     </div >
 }

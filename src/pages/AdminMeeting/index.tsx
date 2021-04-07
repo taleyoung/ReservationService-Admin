@@ -99,7 +99,7 @@ const AdminMeeting = () => {
             <Table dataSource={meetingData.list || []} loading={loading}>
                 {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
             </Table>
-            <Pagination total={meetingData.totalCount} pageSize={meetingData.pageSize} onChange={(curPage) => getListReq(curPage)} />
+            <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={meetingData.totalCount} pageSize={meetingData.pageSize} onChange={(curPage) => getListReq(curPage)} />
         </div>
     </div>
 }

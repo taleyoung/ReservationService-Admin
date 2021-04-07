@@ -72,7 +72,7 @@ const AdminHotelOrder = () => {
                 {renderTableColumn()}
                 {/* {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)} */}
             </Table>
-            <Pagination total={totalCount} pageSize={pageSize} onChange={(page) => request({ page })} />
+            <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={totalCount} pageSize={pageSize} onChange={(page) => request({ page })} />
         </div>
     </div>
 }

@@ -78,7 +78,7 @@ const HomePage = () => {
                     cell={(v: number, val, value) => <Button disabled={value.status !== 1} onClick={() => cancelCheckIn(v, val, value)}>取消预订</Button>}
                 />
             </Table>
-            <Pagination total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
+            <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
         </div>
     </div>
 }

@@ -106,7 +106,7 @@ const AdminMeetingRoom = () => {
                     {tableColumn.map(item => <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />)}
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
                 </Table>
-                <Pagination total={roomInfoData.totalCount} pageSize={roomInfoData.pageSize} onChange={(curPage) => request({ curPage })} />
+                <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={roomInfoData.totalCount} pageSize={roomInfoData.pageSize} onChange={(curPage) => request({ curPage })} />
             </div>
             <Drawer title="编辑会议室"
                 placement="right"

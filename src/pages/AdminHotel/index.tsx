@@ -104,7 +104,7 @@ const AdminHotel = () => {
                     <Table.Column key='room' title='房间管理' dataIndex='room' cell={(v: any, index: number, record) => <Button onClick={() => toRoomTypePage(record)}>查看</Button>} />
                     <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
                 </Table>
-                <Pagination total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(page) => request({ page })} />
+                <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(page) => request({ page })} />
             </div>
             <Drawer title="编辑酒店"
                 placement="right"
