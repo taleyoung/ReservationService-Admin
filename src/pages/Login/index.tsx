@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useRequest, useHistory } from 'ice'
 import { useCookies } from 'react-cookie'
-import { Form, Input, Grid, Message } from '@alifd/next';
+import { Form, Input, Grid, Message, Tag } from '@alifd/next';
 import { userService } from '@/service/user'
 import styles from './index.module.scss'
 
@@ -51,8 +51,8 @@ const Login = () => {
         <FormItem label="密码:">
             <Input.Password name="password" />
         </FormItem>
-        <Form.Submit loading={loginLoading} validate type="secondary" style={{ marginRight: 10 }} onClick={(v) => loginSubmit(v)}>登录</Form.Submit>
-        <Form.Submit text onClick={() => setPageLogin(false)}>立即注册</Form.Submit>
+        <Form.Submit loading={loginLoading} validate type="secondary" style={{ marginRight: 10 }} onClick={(v) => loginSubmit(v)}>立即登录</Form.Submit>
+        <Form.Submit text onClick={() => setPageLogin(false)}>注册</Form.Submit>
     </div>;
 
     const RegisterForm = <div>
@@ -71,15 +71,15 @@ const Login = () => {
         <FormItem label="邮箱:">
             <Input name="email" />
         </FormItem>
-        <Form.Submit loading={regisLoading} validate type="secondary" style={{ marginRight: 10 }} onClick={(v) => regisSubmit(v)}>注册</Form.Submit>
-        <Form.Submit text onClick={() => setPageLogin(true)}>立即登录</Form.Submit>
+        <Form.Submit loading={regisLoading} validate type="secondary" style={{ marginRight: 10 }} onClick={(v) => regisSubmit(v)}>立即注册</Form.Submit>
+        <Form.Submit text onClick={() => setPageLogin(true)}>登录</Form.Submit>
     </div>;
 
-    return <div>
-        <Row justify='space-around' align='center' style={{ height: '100vh' }}>
-            <Col span='6'>
+    return <div className={styles.bg}>
+        <Row justify='end' align='center' style={{ height: '100vh' }}>
+            <Col span='8'>
                 <div className={styles.login}>
-                    <h1>综合预订服务</h1>
+                    <h1>企业综合预订系统 <Tag size='small' type='primary' color={pageLogin ? '#2db7f5' : '#87d068'}>{pageLogin ? '登录' : '注册'}</Tag></h1>
                     <Form {...formItemLayout} size='medium' style={{ maxWidth: '500px' }}>
                         {pageLogin ? LoginForm : RegisterForm}
                     </Form>

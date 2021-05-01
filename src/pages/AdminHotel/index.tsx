@@ -83,11 +83,11 @@ const AdminHotel = () => {
         })
     }
 
-    const renderHandle = (v: any, index: number) => {
+    const renderHandle = (record: any, index: number) => {
         return <div>
             <Button type='secondary' onClick={() => update(index)}>修改</Button>
             <Divider direction='ver'></Divider>
-            <Button warning loading={deleteLoading} onClick={() => deleteRoom(index)}>删除</Button>
+            <Button warning loading={deleteLoading} onClick={() => deleteRoom(record.id)}>删除</Button>
         </div>
     }
 
@@ -102,7 +102,7 @@ const AdminHotel = () => {
                 <Table dataSource={hotelData.list} loading={loading}>
                     {renderColumn()}
                     <Table.Column key='room' title='房间管理' dataIndex='room' cell={(v: any, index: number, record) => <Button onClick={() => toRoomTypePage(record)}>查看</Button>} />
-                    <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number) => renderHandle(v, index)} />
+                    <Table.Column key='edit' title='操作' dataIndex='edit' cell={(v: any, index: number, record) => renderHandle(record, index)} />
                 </Table>
                 <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={hotelData.totalCount} pageSize={hotelData.pageSize} onChange={(page) => request({ page })} />
             </div>

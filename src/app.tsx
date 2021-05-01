@@ -53,9 +53,10 @@ const appConfig: IAppConfig = {
         },
         onError: (error: any) => {
           // 请求出错：服务端返回错误状态码
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          console.log('error', error)
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
           Message.error('操作失败');
           return Promise.reject(error);
         }
