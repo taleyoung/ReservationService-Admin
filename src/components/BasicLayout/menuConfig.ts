@@ -122,9 +122,9 @@ const userAdmin = {
 
 const hotelAdminMenu = [...baseMenu, hotelAdmin];
 
-const meetingAdminMenu = [...baseMenu, meetingAdmin]
+const meetingAdminMenu = [...baseMenu, meetingAdmin];
 
-    const superAdminMenu = [...baseMenu, hotelAdmin, meetingAdmin, userAdmin];
+const superAdminMenu = [...baseMenu, hotelAdmin, meetingAdmin, userAdmin];
 
 const roleMenuMap = [
   superAdminMenu, superAdminMenu, hotelAdminMenu, meetingAdminMenu, baseMenu

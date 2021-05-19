@@ -53,10 +53,13 @@ interface IProps {
 
 const RoomRsvForm = (props: IProps) => {
     const { roomName, roomId, meetingInfo, date } = props;
-    const { request } = useRequest(meetingService.addMeeting);
+    const { request, loading } = useRequest(meetingService.addMeeting);
 
     const submitMeeting = (value) => {
         console.log('value', value);
+        if (value.name === null || value.name === '') {
+            return;
+        }
         const data = {
             ...value,
             date: value.date.valueOf(),
@@ -103,7 +106,7 @@ const RoomRsvForm = (props: IProps) => {
                 <Input placeholder="请输入参会人数" id="memberCount" name="memberCount" />
             </FormItem>
             <FormItem wrapperCol={{ offset: 6 }} >
-                <Form.Submit validate type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
+                <Form.Submit validate loading={loading} type="primary" onClick={(v) => submitMeeting(v)} style={{ marginRight: 10 }}>立即预订</Form.Submit>
             </FormItem>
         </Form>
 

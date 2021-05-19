@@ -71,6 +71,11 @@ const MeetingRoom = () => {
         setSearchDate(v);
         getMeetingRoom({ date: new Date(v) })
     }
+
+    const handleDrawerClose = () => {
+        setDrawerVisible(false);
+        getMeetingRoom({ date: new Date(nowDate) });
+    }
     return (
         <div>
             <div>
@@ -78,7 +83,7 @@ const MeetingRoom = () => {
                 <Divider></Divider>
             </div>
             <div>
-                <DatePicker value={searchDate} onChange={(v) => searchRoom(v as string)}></DatePicker>
+                日期：<DatePicker value={searchDate} onChange={(v) => searchRoom(v as string)}></DatePicker>
                 {/* <Button type='primary' onClick={() => searchRoom()}>查询</Button> */}
             </div>
             <div>
@@ -102,7 +107,7 @@ const MeetingRoom = () => {
                     placement="right"
                     width='600px'
                     visible={drawerVisible}
-                    onClose={() => setDrawerVisible(false)}>
+                    onClose={() => handleDrawerClose()}>
                     <RoomRsvForm roomId={roomInfo.id} roomName={roomInfo.name} date={new Date(searchDate)} meetingInfo={curMeetingInfo}></RoomRsvForm>
                 </Drawer>
             </div>

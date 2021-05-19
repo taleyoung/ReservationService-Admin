@@ -5,6 +5,7 @@ import { Table, Pagination, Tag, Button } from '@alifd/next'
 import NavTitle from '@/components/NavTitle';
 import { CheckInStatusEnum, TagColorEnum } from '@/constant'
 import { hotelCheckInService } from '@/service/order';
+import meetingService from '@/service/room/meeting'
 
 const tableColumn = [
     {
@@ -35,12 +36,40 @@ const tableColumn = [
         title: '状态',
         dataIndex: 'status'
     }
-]
+];
+const meetingTableColumn = [{
+    title: '会议主题',
+    dataIndex: 'name',
+}, {
+    title: '会议日期',
+    dataIndex: 'date',
+}, {
+    title: '会议室',
+    dataIndex: 'meetingRoomId',
+}, {
+    title: '开始时间',
+    dataIndex: 'start',
+}, {
+    title: "结束时间",
+    dataIndex: 'end',
+}, {
+    title: "创建者",
+    dataIndex: 'creatorId',
+}, {
+    title: "会议人数",
+    dataIndex: 'memberCount',
+}, {
+    title: "创建时间",
+    dataIndex: 'createTime',
+}];
 
 const HomePage = () => {
     const { data: checkInData = {}, loading, request } = useRequest(hotelCheckInService.getListByUser);
     const { loading: updateStatusLoading, request: updateStatus } = useRequest(hotelCheckInService.updateStatus);
     // const [cookie] = useCookies()
+    const { data: meetingData = {}, loading: meetingLoading, request: getMeetingList } = useRequest(meetingService.getMeetingList, {
+        manual: false
+    });
 
     useEffect(() => {
         request({})
@@ -79,6 +108,15 @@ const HomePage = () => {
                 />
             </Table>
             <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={checkInData.totalCount} pageSize={checkInData.pageSize} onChange={(curPage) => request(curPage)} />
+        </div>
+        <NavTitle title='预订过的会议'></NavTitle>
+        <div>
+            <Table dataSource={meetingData.list} loading={meetingLoading}>
+                {meetingTableColumn.map(item => (
+                    <Table.Column key={item.dataIndex} title={item.title} dataIndex={item.dataIndex} />
+                ))}
+            </Table>
+            <Pagination style={{ textAlign: 'right', marginTop: '10px' }} total={meetingData.totalCount} pageSize={meetingData.pageSize} onChange={(curPage) => getMeetingList(curPage)} />
         </div>
     </div>
 }

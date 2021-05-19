@@ -83,9 +83,9 @@ const RoomDialog = (props: IProp) => {
                     {roomInfoMap.map(item => (<div key={item.key} className={styles.desc}>{item.name} : {roomInfo[item.key]}</div>))}
                 </Col>
             </Row>
-            <div className={styles.calendar}>
+            {/* <div className={styles.calendar}>
                 <Calendar dateCellRender={dateCellRender} />
-            </div>
+            </div> */}
 
         </div>
     )

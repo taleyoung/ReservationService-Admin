@@ -52,7 +52,7 @@ const AdminUser = () => {
 
     return <div>
         <div>
-            <h2>会议查询</h2>
+            <h2>用户管理</h2>
             <Divider></Divider>
         </div>
         <div>
