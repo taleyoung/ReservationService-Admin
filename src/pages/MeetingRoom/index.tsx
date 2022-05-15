@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRequest } from 'ice'
-import { Box, DatePicker, Divider, Icon, Button, Table, Dialog, Drawer, Tag, Search } from '@alifd/next';
+import { Box, DatePicker, Divider, Icon, Button, Table, Dialog, Drawer, Tag } from '@alifd/next';
 import moment from 'moment'
 import RoomInfoCard from '@/components/RoomInfoCard'
 import RoomRsvForm from '@/components/RoomRsvForm'
@@ -82,8 +82,8 @@ const MeetingRoom = () => {
                 <h2>会议室预订</h2>
                 <Divider></Divider>
             </div>
-            <div>
-                日期：<DatePicker value={searchDate} onChange={(v) => searchRoom(v as string)}></DatePicker>
+            <div style={{ marginBottom: '10px' }}>
+                <Tag style={{ marginRight: '10px' }} color='blue'>日期选择：</Tag><DatePicker value={searchDate} onChange={(v) => searchRoom(v as string)}></DatePicker>
                 {/* <Button type='primary' onClick={() => searchRoom()}>查询</Button> */}
             </div>
             <div>
